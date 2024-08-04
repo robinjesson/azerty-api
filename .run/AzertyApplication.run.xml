@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AzertyApplication" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="fr.robinjesson.azerty.AzertyApplication" />
+    <module name="azerty" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+      <option name="RunConfigurationTask" enabled="false" run_configuration_name="start db docker" run_configuration_type="docker-deploy" />
+    </method>
+  </configuration>
+</component>

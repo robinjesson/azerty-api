@@ -1,0 +1,6 @@
+/Users/robinjesson/Projets/azerty/src/main/java/fr/robinjesson/azerty/entities/UserEntity.java
+/Users/robinjesson/Projets/azerty/src/main/java/fr/robinjesson/azerty/businesses/UserBusiness.java
+/Users/robinjesson/Projets/azerty/src/main/java/fr/robinjesson/azerty/repository/FineJpaRepository.java
+/Users/robinjesson/Projets/azerty/src/main/java/fr/robinjesson/azerty/repository/UserRepository.java
+/Users/robinjesson/Projets/azerty/src/main/java/fr/robinjesson/azerty/exception/NotFoundException.java
+/Users/robinjesson/Projets/azerty/src/main/java/fr/robinjesson/azerty/AzertyApplication.java

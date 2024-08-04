@@ -1,0 +1,6 @@
+fr/robinjesson/azerty/entities/UserEntity.class
+fr/robinjesson/azerty/repository/UserRepository.class
+fr/robinjesson/azerty/repository/FineJpaRepository.class
+fr/robinjesson/azerty/AzertyApplication.class
+fr/robinjesson/azerty/businesses/UserBusiness.class
+fr/robinjesson/azerty/exception/NotFoundException.class

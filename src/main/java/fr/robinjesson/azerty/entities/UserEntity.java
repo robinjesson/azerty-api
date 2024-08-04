@@ -16,4 +16,10 @@ public class UserEntity {
 
     @Column(length = 320, nullable = false)
     private String email;
+
+    @Column(length = 100, nullable = false)
+    private String password;
+
+    @Embedded
+    private Timestamp timestamp;
 }

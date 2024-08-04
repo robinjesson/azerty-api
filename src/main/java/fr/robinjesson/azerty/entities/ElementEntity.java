@@ -14,4 +14,7 @@ public class ElementEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Embedded
+    private Timestamp timestamp;
 }

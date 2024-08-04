@@ -13,4 +13,11 @@ public class TodoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_todo_list_id")
+    private TodoListEntity todoList;
+
+    @Embedded
+    private Timestamp timestamp;
 }

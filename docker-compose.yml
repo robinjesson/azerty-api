@@ -8,11 +8,9 @@ services:
     depends_on:
       - db
     environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: azerty-db
+      DB_URL: jdbc:postgresql://db:5432/azerty-db-local
       DB_USER: postgres
-      DB_PASSWORD: root
+      DB_PASSWORD: mot_de_passe
 
   db:
     image: postgres:14

@@ -1,4 +1,4 @@
-package fr.robinjesson.azerty;
+package fr.robinjesson.azertyapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package fr.robinjesson.azerty.entities;
+package fr.robinjesson.azertyapi.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;

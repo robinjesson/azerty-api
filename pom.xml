@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>fr.robinjesson</groupId>
-	<artifactId>azerty</artifactId>
+	<artifactId>azerty-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>azerty</name>
 	<description>Demo project for Spring Boot</description>

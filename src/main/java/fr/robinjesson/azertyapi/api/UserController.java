@@ -1,4 +1,4 @@
-package fr.robinjesson.azerty.api;
+package fr.robinjesson.azertyapi.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

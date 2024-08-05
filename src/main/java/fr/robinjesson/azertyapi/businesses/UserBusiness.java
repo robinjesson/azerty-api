@@ -1,8 +1,8 @@
-package fr.robinjesson.azerty.businesses;
+package fr.robinjesson.azertyapi.businesses;
 
-import fr.robinjesson.azerty.entities.UserEntity;
-import fr.robinjesson.azerty.exception.NotFoundException;
-import fr.robinjesson.azerty.repository.UserRepository;
+import fr.robinjesson.azertyapi.entities.UserEntity;
+import fr.robinjesson.azertyapi.exception.NotFoundException;
+import fr.robinjesson.azertyapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

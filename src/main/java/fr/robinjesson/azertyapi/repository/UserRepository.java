@@ -1,6 +1,6 @@
-package fr.robinjesson.azerty.repository;
+package fr.robinjesson.azertyapi.repository;
 
-import fr.robinjesson.azerty.entities.UserEntity;
+import fr.robinjesson.azertyapi.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

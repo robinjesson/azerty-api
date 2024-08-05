@@ -1,4 +1,4 @@
-package fr.robinjesson.azerty.exception;
+package fr.robinjesson.azertyapi.exception;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

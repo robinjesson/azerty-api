@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AzertyApplication" type="Application" factoryName="Application">
+    <envs>
+      <env name="DB_PASSWORD" value="mot_de_passe" />
+      <env name="DB_URL" value="jdbc:postgresql://localhost:5432/azerty-db-local" />
+      <env name="DB_USER" value="postgres" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="fr.robinjesson.azertyapi.AzertyApplication" />
+    <module name="azerty" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+      <option name="RunConfigurationTask" enabled="false" run_configuration_name="start db docker" run_configuration_type="docker-deploy" />
+    </method>
+  </configuration>
+</component>

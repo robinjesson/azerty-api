@@ -1,13 +1,11 @@
 package fr.robinjesson.azertyapi.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Entity
 @Table(name = "todo")
-@Getter
-@Setter
+@Data
 public class TodoEntity {
 
     @Id

@@ -1,13 +1,11 @@
 package fr.robinjesson.azertyapi.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Entity
 @Table(name = "element")
-@Getter
-@Setter
+@Data
 @Inheritance(strategy = InheritanceType.JOINED)
 public class ElementEntity {
 

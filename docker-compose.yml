@@ -11,6 +11,7 @@ services:
       DB_URL: jdbc:postgresql://db:5432/azerty-db-local
       DB_USER: postgres
       DB_PASSWORD: mot_de_passe
+      JWT_SECRET_KEY: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
 
   db:
     image: postgres:14

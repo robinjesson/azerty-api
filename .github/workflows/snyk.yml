@@ -1,0 +1,26 @@
+name: Workflow for Maven using Snyk
+on:
+  pull_request:
+    types: [ opened, synchronize ]
+  push:
+    branches:
+      - develop
+      - master
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 22
+        uses: actions/setup-java@v1
+        with:
+          java-version: 22
+          settings-path: ${{ github.workspace }}
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/maven-3-jdk-22@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}

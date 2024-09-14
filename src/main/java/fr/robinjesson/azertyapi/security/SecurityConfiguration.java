@@ -1,5 +1,6 @@
 package fr.robinjesson.azertyapi.security;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,13 +21,18 @@ public class SecurityConfiguration {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final UserFilter userFilter;
+    @Getter
+    private static final List<String> whitelist = List.of(
+            "/auth/**"
+    );
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(getWhitelist().toArray(String[]::new))
+                        .requestMatchers(whitelist.toArray(String[]::new))
                         .permitAll()
                         .anyRequest()
                         .authenticated()
@@ -35,14 +41,7 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No sessions
                 )
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);;
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
       return http.build();
-    }
-
-
-    public static List<String> getWhitelist() {
-        return List.of(
-                "/auth/**"
-        );
     }
 }

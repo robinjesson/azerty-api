@@ -29,6 +29,7 @@
 	<properties>
 		<java.version>21</java.version>
 		<org.mapstruct.version>1.6.0</org.mapstruct.version>
+		<tzatziki.version>1.5.3</tzatziki.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -87,6 +88,45 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.decathlon.tzatziki</groupId>
+			<artifactId>tzatziki-spring</artifactId>
+			<version>${tzatziki.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.decathlon.tzatziki</groupId>
+			<artifactId>tzatziki-spring-jpa</artifactId>
+			<version>${tzatziki.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>jackson-datatype-hibernate5-jakarta</artifactId>
+					<groupId>com.fasterxml.jackson.datatype</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>1.20.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-hibernate5-jakarta</artifactId>
+			<version>2.17.2</version> <!-- Check for the latest version -->
 		</dependency>
 	</dependencies>
 

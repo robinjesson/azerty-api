@@ -26,3 +26,5 @@ replay_pid*
 azerty-api/
 
 target/
+
+.idea/

@@ -28,7 +28,7 @@ public class AzertyApplicationSteps {
                     "spring.datasource.username=" + postgres.getUsername(),
                     "spring.datasource.password=" + postgres.getPassword(),
                     "security.jwt.secret-key=JWTKEY",
-                    "jpa.hibernate.ddl-auto=create"
+                    "jpa.hibernate.ddl-auto=create-drop"
             ).applyTo(configurableApplicationContext.getEnvironment());
         }
     }

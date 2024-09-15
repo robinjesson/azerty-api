@@ -21,10 +21,11 @@ public class SecurityConfiguration {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final UserFilter userFilter;
+
     @Getter
     private static final List<String> whitelist = List.of(
-            "/auth/**"
+            "/auth/**",
+            "/actuator/**"
     );
 
     @Bean

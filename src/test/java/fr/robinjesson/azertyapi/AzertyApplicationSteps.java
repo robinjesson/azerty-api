@@ -1,5 +1,6 @@
 package fr.robinjesson.azertyapi;
 
+import io.cucumber.java.en.Given;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.apache.groovy.util.Maps;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +28,7 @@ public class AzertyApplicationSteps {
                     "spring.datasource.url=" + postgres.getJdbcUrl(),
                     "spring.datasource.username=" + postgres.getUsername(),
                     "spring.datasource.password=" + postgres.getPassword(),
-                    "security.jwt.secret-key=JWTKEY",
+                    "security.jwt.secret-key=3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b",
                     "jpa.hibernate.ddl-auto=create-drop"
             ).applyTo(configurableApplicationContext.getEnvironment());
         }

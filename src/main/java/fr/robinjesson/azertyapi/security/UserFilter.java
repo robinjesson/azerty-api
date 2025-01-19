@@ -34,8 +34,8 @@ public class UserFilter implements Filter {
         }
 
         final UserEntity user = getDecathlonUserAuthenticationOrThrowIfNotExist(getContextOfThrowIfNotExist());
+        azertyUser.setUid(user.getUid());
         azertyUser.setEmail(user.getEmail());
-        azertyUser.setUuid(user.getUuid());
 
         filterChain.doFilter(servletRequest, servletResponse);
     }

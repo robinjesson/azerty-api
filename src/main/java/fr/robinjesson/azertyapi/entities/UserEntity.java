@@ -1,24 +1,25 @@
 package fr.robinjesson.azertyapi.entities;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 @Data
+@Builder
 public class UserEntity implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID uuid;
+    @Column(length = 20)
+    private String uid;
 
-    @Column(length = 320, nullable = false, unique = true)
+    @Column(length = 320)
     private String email;
 
     @Column(length = 100, nullable = false)
@@ -34,7 +35,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return uid;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package fr.robinjesson.azertyapi.businesses;
 
 import fr.robinjesson.azertyapi.entities.UserEntity;
-import fr.robinjesson.azertyapi.exception.NotFoundException;
+import fr.robinjesson.azertyapi.exception.BadRequestException;
 import fr.robinjesson.azertyapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,7 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,25 +18,23 @@ public class UserBusiness {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public UserEntity findByUuid(final UUID uuid) {
-        return userRepository.findById(uuid)
-                .orElseThrow(() -> new NotFoundException("User not found"));
-    }
-
     public UserEntity create(final UserEntity user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        final Optional<UserEntity> existingUser = userRepository.findById(user.getUid());
+        if(existingUser.isPresent())
+            throw new BadRequestException("User %s already exists".formatted(user.getUid()));
         return userRepository.save(user);
     }
 
     public UserEntity authenticate(final UserEntity user) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        user.getEmail(),
+                        user.getUid(),
                         user.getPassword()
                 )
         );
 
-        return userRepository.findByEmail(user.getEmail())
+        return userRepository.findById(user.getUid())
                 .orElseThrow();
     }
 }

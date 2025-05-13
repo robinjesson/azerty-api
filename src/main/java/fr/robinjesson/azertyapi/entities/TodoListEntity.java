@@ -3,13 +3,15 @@ package fr.robinjesson.azertyapi.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "todo_list")
-@Data
+@Getter
+@Setter
 public class TodoListEntity extends ElementEntity {
 
     @OneToMany(mappedBy = "todoList")

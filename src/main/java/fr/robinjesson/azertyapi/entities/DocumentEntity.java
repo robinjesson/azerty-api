@@ -1,13 +1,15 @@
 package fr.robinjesson.azertyapi.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "document")
-@Data
+@Getter
+@Setter
 public class DocumentEntity {
 
     @Id

@@ -17,7 +17,12 @@ public class StepDefinitions {
 
     @Given("a user named " + Patterns.VARIABLE + "$")
     public void a_user_with_uid(final String uid){
-        String token = jwtBusiness.generateToken(UserEntity.builder().uid(uid).password(passwordEncoder.encode("password")).build());
+        a_user_with_uid_and_password(uid, "password");
+    }
+
+    @Given("a user named " + Patterns.VARIABLE + " with password " + Patterns.VARIABLE + "$")
+    public void a_user_with_uid_and_password(final String uid, final String password){
+        String token = jwtBusiness.generateToken(UserEntity.builder().uid(uid).password(passwordEncoder.encode(password)).build());
         httpSteps.addHeader(uid, "Authorization", String.format("Bearer %s", token));
     }
 }

@@ -28,6 +28,8 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<sonar.organization>robinjesson</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<org.mapstruct.version>1.6.0</org.mapstruct.version>
 		<tzatziki.version>1.5.3</tzatziki.version>
 	</properties>

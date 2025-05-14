@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserFilter implements Filter {
 
-    private final AzertyUser azertyUser;
+    private final ConnectedUser connectedUser;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     @Override
@@ -34,8 +34,8 @@ public class UserFilter implements Filter {
         }
 
         final UserEntity user = getDecathlonUserAuthenticationOrThrowIfNotExist(getContextOfThrowIfNotExist());
-        azertyUser.setUid(user.getUid());
-        azertyUser.setEmail(user.getEmail());
+        connectedUser.setUid(user.getUid());
+        connectedUser.setEmail(user.getEmail());
 
         filterChain.doFilter(servletRequest, servletResponse);
     }

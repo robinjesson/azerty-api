@@ -9,7 +9,7 @@ import org.springframework.web.context.annotation.RequestScope;
 @RequestScope
 @Getter
 @Setter
-public class AzertyUser {
+public class ConnectedUser {
     private String uid;
     private String email;
 }

@@ -1,4 +1,4 @@
-Feature: User info
+Feature: Get connected user information
 
   Scenario: When existing user in jwt request its information, then the response is ok with its information
     Given a user named robinj

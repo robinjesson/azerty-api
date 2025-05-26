@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table(name = "budget")
 @Getter
 @Setter
-public class Budget {
+public class BudgetEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
@@ -31,7 +31,7 @@ public class Budget {
     private AccountEntity targetAccount;
 
     @Column(nullable = false)
-    private BigDecimal amountSetAside = BigDecimal.ZERO;
+    private BigDecimal amountSetAside;
 
     @Enumerated(EnumType.STRING)
     private FrequencyEnum contributionFrequency;

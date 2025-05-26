@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Embeddable
 @Getter
 @Setter
-public class Timestamp {
+public final class Timestamp {
 
     @CreationTimestamp
     @Column(updatable = false)

@@ -33,6 +33,8 @@
 		<org.mapstruct.version>1.6.0</org.mapstruct.version>
 		<tzatziki.version>1.5.3</tzatziki.version>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.language>java</sonar.language>
 	</properties>
 	<dependencies>
 		<dependency>

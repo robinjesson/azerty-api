@@ -32,6 +32,7 @@
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<org.mapstruct.version>1.6.0</org.mapstruct.version>
 		<tzatziki.version>1.5.3</tzatziki.version>
+		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 	<dependencies>
 		<dependency>

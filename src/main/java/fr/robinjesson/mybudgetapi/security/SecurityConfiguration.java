@@ -23,18 +23,22 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final ConnectedUserFilter connectedUserFilter;
 
-    @Getter
-    private static final List<String> whitelist = List.of(
+    private static final String[] whitelist = {
             "/auth/**",
-            "/actuator/**"
-    );
+            "/actuator/**",
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/webjars/**"
+    };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(whitelist.toArray(String[]::new))
+                        .requestMatchers(whitelist)
                         .permitAll()
                         .anyRequest()
                         .authenticated()

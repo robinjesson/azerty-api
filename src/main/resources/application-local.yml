@@ -1,3 +1,14 @@
 jpa:
   hibernate:
     ddl-auto: create-drop
+spring:
+  application:
+    name: azerty-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/azerty-db-local
+    username: postgres
+    password: mot_de_passe
+security:
+  jwt:
+    secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
+    cookie-secure: false

@@ -13,3 +13,4 @@ security:
   jwt:
     secret-key: ${JWT_SECRET_KEY}
     expiration-time: 7200000
+    cookie-secure: true

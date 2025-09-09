@@ -2,13 +2,14 @@ package fr.robinjesson.mybudgetapi.adapter;
 
 import fr.robinjesson.mybudgetapi.api.request.LoginRequest;
 import fr.robinjesson.mybudgetapi.api.request.RegisterUserRequest;
-import fr.robinjesson.mybudgetapi.api.response.LoginResponse;
 import fr.robinjesson.mybudgetapi.api.response.UserResponse;
 import fr.robinjesson.mybudgetapi.businesses.JwtBusiness;
 import fr.robinjesson.mybudgetapi.businesses.UserBusiness;
 import fr.robinjesson.mybudgetapi.entities.UserEntity;
 import fr.robinjesson.mybudgetapi.mappers.UserMapper;
+import fr.robinjesson.mybudgetapi.security.Consts;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,13 +25,15 @@ public class UserAdapter {
         return userMapper.mapToResponse(userEntity);
     }
 
-    public LoginResponse authenticate(final LoginRequest loginRequest) {
+    public ResponseCookie authenticate(final LoginRequest loginRequest) {
         final UserEntity user = userBusiness.authenticate(
                 userMapper.mapToEntity(loginRequest)
         );
-        return LoginResponse.builder()
-                .token(jwtBusiness.generateToken(user))
-                .expiresIn(jwtBusiness.getExpirationTime())
+        final String token = jwtBusiness.generateToken(user);
+        return ResponseCookie.from(Consts.COOKIE_NAME, token)
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(jwtBusiness.getJwtExpiration())
                 .build();
     }
 }

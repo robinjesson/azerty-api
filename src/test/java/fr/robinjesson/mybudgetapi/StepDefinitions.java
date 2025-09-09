@@ -4,8 +4,10 @@ import com.decathlon.tzatziki.steps.HttpSteps;
 import com.decathlon.tzatziki.utils.Patterns;
 import fr.robinjesson.mybudgetapi.businesses.JwtBusiness;
 import fr.robinjesson.mybudgetapi.entities.UserEntity;
+import fr.robinjesson.mybudgetapi.security.Consts;
 import io.cucumber.java.en.Given;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @AllArgsConstructor
@@ -22,7 +24,7 @@ public class StepDefinitions {
 
     @Given("a user named " + Patterns.VARIABLE + " with password " + Patterns.VARIABLE + "$")
     public void a_user_with_uid_and_password(final String uid, final String password){
-        String token = jwtBusiness.generateToken(UserEntity.builder().uid(uid).password(passwordEncoder.encode(password)).build());
-        httpSteps.addHeader(uid, "Authorization", String.format("Bearer %s", token));
+        final String token = jwtBusiness.generateToken(UserEntity.builder().uid(uid).password(passwordEncoder.encode(password)).build());
+        httpSteps.addHeader(uid, HttpHeaders.COOKIE, Consts.COOKIE_NAME + "=" + token);
     }
 }

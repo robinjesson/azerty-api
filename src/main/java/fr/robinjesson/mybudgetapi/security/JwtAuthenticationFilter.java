@@ -3,6 +3,7 @@ package fr.robinjesson.mybudgetapi.security;
 import fr.robinjesson.mybudgetapi.businesses.JwtBusiness;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -33,15 +36,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-        final String authHeader = request.getHeader("Authorization");
+        final Optional<String> jwtOpt = Optional.ofNullable(request.getCookies())
+                .map(cookies -> Arrays.stream(cookies).filter(cookie -> Consts.COOKIE_NAME.equals(cookie.getName())).findFirst())
+                .flatMap(cookie -> cookie.map(Cookie::getValue));
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+
+        if (jwtOpt.isEmpty()) {
             filterChain.doFilter(request, response);
             return;
         }
 
+        final String jwt = jwtOpt.get();
+
         try {
-            final String jwt = authHeader.substring(7);
             final String userId = jwtBusiness.extractUsername(jwt);
 
             final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

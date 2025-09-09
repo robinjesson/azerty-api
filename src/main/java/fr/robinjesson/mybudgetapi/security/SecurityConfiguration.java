@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.List;
 
@@ -46,6 +47,13 @@ public class SecurityConfiguration {
                 .sessionManagement(sess -> sess
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No sessions
                 )
+                .cors(cors -> cors.configurationSource(request -> {
+                    final CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+                    configuration.setAllowedMethods(List.of("*"));
+                    configuration.setAllowedHeaders(List.of("*"));
+                    return configuration;
+                }))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(connectedUserFilter, JwtAuthenticationFilter.class);

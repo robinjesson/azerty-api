@@ -3,9 +3,9 @@ package fr.robinjesson.mybudgetapi.api;
 import fr.robinjesson.mybudgetapi.adapter.UserAdapter;
 import fr.robinjesson.mybudgetapi.api.request.LoginRequest;
 import fr.robinjesson.mybudgetapi.api.request.RegisterUserRequest;
-import fr.robinjesson.mybudgetapi.api.response.LoginResponse;
 import fr.robinjesson.mybudgetapi.api.response.UserResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +25,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody final LoginRequest loginRequest) {
-        return ResponseEntity.ok(userAdapter.authenticate(loginRequest));
+    public ResponseEntity<Void> login(@RequestBody final LoginRequest loginRequest) {
+        return ResponseEntity.noContent()
+                .header(HttpHeaders.SET_COOKIE, userAdapter.authenticate(loginRequest).toString())
+                .build();
     }
 }

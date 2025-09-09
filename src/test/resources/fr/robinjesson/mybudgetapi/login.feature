@@ -27,12 +27,7 @@ Feature: Login feature
     uid: userTest
     password: fakePwd
     """
-    Then we receive a status OK_200
-    And we receive:
-    """yml
-    token: ?notNull
-    expiresIn: ?notNull
-    """
+    Then we receive a status NO_CONTENT_204
 
   Scenario: Signup and can't login with wrong password
     When we post "/auth/signup":

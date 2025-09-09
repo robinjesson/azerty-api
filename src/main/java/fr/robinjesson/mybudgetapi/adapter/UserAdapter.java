@@ -32,9 +32,8 @@ public class UserAdapter {
         final String token = jwtBusiness.generateToken(user);
         return ResponseCookie.from(Consts.COOKIE_NAME, token)
                 .httpOnly(true)
-                .secure(false) //TODO
-                .sameSite("None")
-                .maxAge(jwtBusiness.getJwtExpiration() / 1000)
+                .path("/")
+                .maxAge(jwtBusiness.getJwtExpiration())
                 .build();
     }
 }

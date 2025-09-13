@@ -41,7 +41,7 @@ public class UserAdapter {
                 .httpOnly(true)
                 .path("/")
                 .secure(cookieSecure)
-                .maxAge(jwtExpiration)
+                .maxAge(jwtExpiration / 1000)
                 .build();
     }
 }

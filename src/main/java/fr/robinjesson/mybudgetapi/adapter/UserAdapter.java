@@ -9,6 +9,7 @@ import fr.robinjesson.mybudgetapi.entities.UserEntity;
 import fr.robinjesson.mybudgetapi.mappers.UserMapper;
 import fr.robinjesson.mybudgetapi.security.Consts;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,12 @@ public class UserAdapter {
     private final UserMapper userMapper;
     private final UserBusiness userBusiness;
     private final JwtBusiness jwtBusiness;
+
+    @Value("${security.jwt.expiration-time}")
+    private long jwtExpiration;
+
+    @Value("${security.jwt.cookie-secure}")
+    private boolean cookieSecure;
 
     public UserResponse signup(final RegisterUserRequest registerUserRequest) {
         UserEntity userEntity = userMapper.mapToEntity(registerUserRequest);
@@ -32,8 +39,9 @@ public class UserAdapter {
         final String token = jwtBusiness.generateToken(user);
         return ResponseCookie.from(Consts.COOKIE_NAME, token)
                 .httpOnly(true)
-                .secure(true)
-                .maxAge(jwtBusiness.getJwtExpiration())
+                .path("/")
+                .secure(cookieSecure)
+                .maxAge(jwtExpiration / 1000)
                 .build();
     }
 }

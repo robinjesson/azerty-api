@@ -50,8 +50,9 @@ public class SecurityConfiguration {
                 .cors(cors -> cors.configurationSource(request -> {
                     final CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-                    configuration.setAllowedMethods(List.of("*"));
+                    configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
                     configuration.setAllowedHeaders(List.of("*"));
+                    configuration.setAllowCredentials(true);
                     return configuration;
                 }))
                 .authenticationProvider(authenticationProvider)

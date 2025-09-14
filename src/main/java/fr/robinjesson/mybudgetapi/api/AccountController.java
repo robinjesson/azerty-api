@@ -1,0 +1,28 @@
+package fr.robinjesson.mybudgetapi.api;
+
+import fr.robinjesson.mybudgetapi.adapter.AccountAdapter;
+import fr.robinjesson.mybudgetapi.api.request.AccountCreationRequest;
+import fr.robinjesson.mybudgetapi.api.response.AccountResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/accounts")
+@RequiredArgsConstructor
+public class AccountController {
+
+    private final AccountAdapter accountAdapter;
+
+    @GetMapping
+    public ResponseEntity<List<AccountResponse>> findUserAccounts() {
+        return ResponseEntity.ok(accountAdapter.findUserAccounts());
+    }
+
+    @PostMapping
+    public ResponseEntity<AccountResponse> createAccountForConnectedUser(@RequestBody final AccountCreationRequest accountCreationRequest) {
+        return ResponseEntity.ok(accountAdapter.createAccountForConnectedUser(accountCreationRequest));
+    }
+}

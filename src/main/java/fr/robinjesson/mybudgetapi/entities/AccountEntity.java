@@ -18,6 +18,8 @@ public class AccountEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
+    private String name;
+
     @ManyToOne
     @JoinColumn(name = "fk_user_id")
     private UserEntity user;

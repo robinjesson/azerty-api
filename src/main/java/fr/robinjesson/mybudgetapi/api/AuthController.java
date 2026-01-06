@@ -1,5 +1,6 @@
 package fr.robinjesson.mybudgetapi.api;
 
+import fr.robinjesson.mybudgetapi.adapter.AuthAdapter;
 import fr.robinjesson.mybudgetapi.adapter.UserAdapter;
 import fr.robinjesson.mybudgetapi.api.request.LoginRequest;
 import fr.robinjesson.mybudgetapi.api.request.RegisterUserRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final UserAdapter userAdapter;
+    private final AuthAdapter authAdapter;
 
     @PostMapping("/signup")
     public ResponseEntity<UserResponse> signup(@RequestBody final RegisterUserRequest registerUserRequest) {
@@ -27,7 +29,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Void> login(@RequestBody final LoginRequest loginRequest) {
         return ResponseEntity.noContent()
-                .header(HttpHeaders.SET_COOKIE, userAdapter.authenticate(loginRequest).toString())
+                .header(HttpHeaders.SET_COOKIE, authAdapter.authenticate(loginRequest).toString())
                 .build();
     }
 }

@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,6 +27,10 @@ public class UserEntity implements UserDetails {
 
     @Column(length = 100, nullable = false)
     private String password;
+
+    private LocalDateTime lastConnection;
+
+    private LocalDateTime lastPasswordModification;
 
     @Embedded
     private Timestamp timestamp;

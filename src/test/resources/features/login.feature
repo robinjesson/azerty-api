@@ -13,6 +13,8 @@ Feature: Login feature
     uid: userTest
     email: user@test.fr
     password: ?not fakePwd
+    lastConnection: ?isNull
+    lastPasswordModification: ?notNull
     """
 
   Scenario: Signup and can login with good password
@@ -28,6 +30,11 @@ Feature: Login feature
     password: fakePwd
     """
     Then we receive a status NO_CONTENT_204
+    And the UserEntity entities contain:
+    """yml
+    uid: userTest
+    lastConnection: ?notNull
+    """
 
   Scenario: Signup and can't login with wrong password
     When we post "/auth/signup":

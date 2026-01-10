@@ -3,7 +3,6 @@ package fr.robinjesson.mybudgetapi.adapter;
 import fr.robinjesson.mybudgetapi.api.request.LoginRequest;
 import fr.robinjesson.mybudgetapi.businesses.AuthBusiness;
 import fr.robinjesson.mybudgetapi.businesses.JwtBusiness;
-import fr.robinjesson.mybudgetapi.businesses.UserBusiness;
 import fr.robinjesson.mybudgetapi.entities.UserEntity;
 import fr.robinjesson.mybudgetapi.mappers.UserMapper;
 import fr.robinjesson.mybudgetapi.security.Consts;

@@ -44,7 +44,7 @@ Feature: Accounts
     Then we receive a status OK_200
     And we receive:
     """yml
-    name:  new account
+    name: new account
     startAmount: 12
     """
     And that the AccountEntity entities contain:

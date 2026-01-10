@@ -1,4 +1,4 @@
-package fr.robinjesson.mybudgetapi;
+package fr.robinjesson.mybudgetapi.steps;
 
 import com.decathlon.tzatziki.steps.HttpSteps;
 import com.decathlon.tzatziki.utils.Patterns;

@@ -98,6 +98,19 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
 		</dependency>
+		<!-- Tzatziki dependencies with HTTP support -->
+		<dependency>
+			<groupId>com.decathlon.tzatziki</groupId>
+			<artifactId>tzatziki-http</artifactId>
+			<version>${tzatziki.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>io.cucumber</groupId>
+					<artifactId>cucumber-picocontainer</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<dependency>
 			<groupId>com.decathlon.tzatziki</groupId>
 			<artifactId>tzatziki-spring</artifactId>
@@ -174,7 +187,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.6</version>
+				<version>0.8.14</version>
 				<executions>
 					<execution>
 						<id>default-prepare-agent</id>

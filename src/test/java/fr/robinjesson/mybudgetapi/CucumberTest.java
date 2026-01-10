@@ -2,16 +2,19 @@ package fr.robinjesson.mybudgetapi;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
+import io.cucumber.spring.SpringFactory;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(plugin = "pretty",
-        tags = "not @ignore",
-        features = "src/test/resources/fr/robinjesson/mybudgetapi/features", // Path to your feature files
-        glue = {
-                "fr.robinjesson.mybudgetapi", // include root package so AzertyApplicationSteps is discovered
-                "fr.robinjesson.mybudgetapi.features", // Finds your custom steps definitions in this package
-                "com.decathlon.tzatziki.steps" // Finds Tzatziki steps definitions
-        })
+@CucumberOptions(
+		plugin = {"pretty", "html:target/cucumber-reports/index.html"},
+		tags = "not @ignore",
+		features = "src/test/resources/fr/robinjesson/mybudgetapi/features",
+		objectFactory = SpringFactory.class,
+		glue = {
+				"fr.robinjesson.mybudgetapi",
+				"com.decathlon.tzatziki.steps",
+				"com.decathlon.tzatziki.steps.http"
+		})
 public class CucumberTest {
 }

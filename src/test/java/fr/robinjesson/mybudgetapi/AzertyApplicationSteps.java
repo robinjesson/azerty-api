@@ -15,6 +15,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = MyBudgetApplication.class)
 @ContextConfiguration(initializers = AzertyApplicationSteps.Initializer.class)
 public class AzertyApplicationSteps {
+	// This class serves as the Spring Boot Test context configuration for Cucumber scenarios
 
     private static final PostgreSQLContainer<?> postgres =
             new PostgreSQLContainer<>("postgres:latest").withTmpFs(Maps.of("/var/lib/postgresql/data", "rw"));

@@ -1,5 +1,6 @@
-package fr.robinjesson.mybudgetapi;
+package fr.robinjesson.mybudgetapi.steps;
 
+import fr.robinjesson.mybudgetapi.MyBudgetApplication;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.apache.groovy.util.Maps;
 import org.springframework.boot.test.context.SpringBootTest;

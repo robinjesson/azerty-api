@@ -98,23 +98,11 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
 		</dependency>
-		<!-- Cucumber dependencies -->
+		<!-- Tzatziki dependencies with HTTP support -->
 		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-java</artifactId>
-			<version>7.17.0</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-spring</artifactId>
-			<version>7.17.0</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-junit</artifactId>
-			<version>7.17.0</version>
+			<groupId>com.decathlon.tzatziki</groupId>
+			<artifactId>tzatziki-http</artifactId>
+			<version>${tzatziki.version}</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -122,13 +110,6 @@
 					<artifactId>cucumber-picocontainer</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<!-- Tzatziki dependencies with HTTP support -->
-		<dependency>
-			<groupId>com.decathlon.tzatziki</groupId>
-			<artifactId>tzatziki-http</artifactId>
-			<version>${tzatziki.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.decathlon.tzatziki</groupId>

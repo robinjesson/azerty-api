@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 		tags = "not @ignore",
 		features = "classpath:features",
 		glue = {
-				"fr.robinjesson.mybudgetapi.features",
+				"fr.robinjesson.mybudgetapi.steps",
 				"com.decathlon.tzatziki.steps"
 		})
 public class CucumberTest {

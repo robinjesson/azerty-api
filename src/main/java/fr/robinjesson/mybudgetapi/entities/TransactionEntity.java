@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -33,8 +34,6 @@ public class TransactionEntity {
     @Column(nullable = false)
     private BigDecimal amount;
 
-    private String description;
-
     @Column(nullable = false)
     private LocalDate transactionDate;
 
@@ -55,6 +54,14 @@ public class TransactionEntity {
     private TransferEntity transfer;
 
     private LocalDate deferredDebitDate;
+
+    @OneToMany
+    @JoinTable(
+            name = "transaction_tag",
+            joinColumns = @JoinColumn(name = "fk_transaction_uuid"),
+            inverseJoinColumns = @JoinColumn(name = "fk_tag_label")
+    )
+    private Set<TagEntity> tags;
 
     @Embedded
     private Timestamp timestamp;

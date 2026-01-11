@@ -4,6 +4,7 @@ import fr.robinjesson.mybudgetapi.adapter.AccountAdapter;
 import fr.robinjesson.mybudgetapi.api.request.AccountCreationRequest;
 import fr.robinjesson.mybudgetapi.api.response.AccountResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity<AccountResponse> createAccountForConnectedUser(@RequestBody final AccountCreationRequest accountCreationRequest) {
-        return ResponseEntity.ok(accountAdapter.createAccountForConnectedUser(accountCreationRequest));
+        return new ResponseEntity<>(accountAdapter.createAccountForConnectedUser(accountCreationRequest), HttpStatus.CREATED);
+
     }
 }

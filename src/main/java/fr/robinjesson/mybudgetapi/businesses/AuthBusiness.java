@@ -18,14 +18,14 @@ public class AuthBusiness {
     private final AuthenticationManager authenticationManager;
 
     public UserEntity authenticate(final String uid, final String password) {
-        final Optional<UserEntity> optionnalUser = userRepository.findById(uid);
-        if(optionnalUser.isEmpty())
+        final Optional<UserEntity> optionalUser = userRepository.findById(uid);
+        if(optionalUser.isEmpty())
             throw new BadRequestException("User %s does not exist".formatted(uid));
 
         final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(uid, password);
         authenticationManager.authenticate(authenticationToken);
 
-        final UserEntity userEntity = optionnalUser.get();
+        final UserEntity userEntity = optionalUser.get();
         userEntity.setLastConnection(LocalDateTime.now());
         return userRepository.save(userEntity);
     }

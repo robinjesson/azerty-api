@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -25,7 +26,7 @@ public class AuthBusiness {
         authenticationManager.authenticate(authenticationToken);
 
         final UserEntity userEntity = optionnalUser.get();
-        userEntity.setLastConnection(userEntity.getLastConnection());
+        userEntity.setLastConnection(LocalDateTime.now());
         return userRepository.save(userEntity);
     }
 }

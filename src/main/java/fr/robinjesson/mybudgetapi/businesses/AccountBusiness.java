@@ -26,7 +26,7 @@ public class AccountBusiness {
                     accountEntity.setUser(user);
                     return accountRepository.save(accountEntity);
                 })
-                .orElse(null);
+                .orElseThrow(() -> new IllegalStateException("User not found for UID " + connectedUser.getUid()));
     }
 
 }

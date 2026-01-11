@@ -36,6 +36,7 @@
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.language>java</sonar.language>
 		<jjwt.version>0.13.0</jjwt.version>
+		<jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -188,27 +189,19 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.14</version>
+				<version>${jacoco-maven-plugin.version}</version>
 				<executions>
 					<execution>
-						<id>default-prepare-agent</id>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
-						<configuration>
-							<destFile>${project.build.directory}/jacoco-ut.exec</destFile>
-						</configuration>
 					</execution>
 					<execution>
-						<id>default-report</id>
+						<id>report</id>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>report</goal>
 						</goals>
-						<configuration>
-							<dataFile>${project.build.directory}/jacoco-ut.exec</dataFile>
-							<outputEncoding>UTF-8</outputEncoding>
-							<outputDirectory>${project.build.directory}</outputDirectory>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>

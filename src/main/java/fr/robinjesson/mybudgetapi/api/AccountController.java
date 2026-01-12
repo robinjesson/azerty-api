@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/accounts")
@@ -16,6 +17,11 @@ import java.util.List;
 public class AccountController {
 
     private final AccountAdapter accountAdapter;
+
+    @GetMapping("/{uuid}")
+    public ResponseEntity<AccountResponse> findById(final UUID uuid) {
+        return ResponseEntity.ok(accountAdapter.findConcreteById(uuid));
+    }
 
     @GetMapping
     public ResponseEntity<List<AccountResponse>> findUserAccounts() {

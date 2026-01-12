@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,11 @@ public class AccountAdapter {
 
     private final AccountBusiness accountBusiness;
     private final AccountMapper accountMapper;
+
+    public AccountResponse findConcreteById(final UUID uuid) {
+        final AccountEntity accountEntitiy = accountBusiness.findConcreteById(uuid);
+        return accountMapper.mapToResponse(accountEntitiy);
+    }
 
     public List<AccountResponse> findUserAccounts() {
         final List<AccountEntity> accountEntities = accountBusiness.findUserAccounts();

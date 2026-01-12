@@ -30,7 +30,7 @@
 		<java.version>21</java.version>
 		<sonar.organization>robinjesson</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<org.mapstruct.version>1.6.0</org.mapstruct.version>
+		<org.mapstruct.version>1.6.3</org.mapstruct.version>
 		<tzatziki.version>2.3.9</tzatziki.version>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>

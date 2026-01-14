@@ -37,8 +37,6 @@ public class TransactionEntity {
     @Column(nullable = false)
     private LocalDate transactionDate;
 
-    private String category;
-
     @Column(nullable = false)
     private Boolean isPointed;
 

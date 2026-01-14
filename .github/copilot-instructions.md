@@ -87,14 +87,124 @@ exception/     → Custom exceptions and global exception handler
 
 ## Testing
 
-### Integration Tests (Cucumber/Tzatziki)
+### Tzatziki Framework (by Decathlon)
 
-- Feature files located in `src/test/resources/features/`
-- Use YAML format for test data in Gherkin steps
-- Test scenarios should cover:
-  - Happy path
-  - Authorization (user can only access their own resources)
-  - Error cases (404, 403, 400)
+This project uses **Tzatziki**, a BDD testing framework created by Decathlon that extends Cucumber with powerful built-in steps for HTTP testing, JPA entity management, and YAML data formatting.
+
+**Tzatziki modules used:**
+- `tzatziki-common` - Core utilities and patterns
+- `tzatziki-http` - HTTP client steps for REST API testing
+- `tzatziki-spring` - Spring Boot integration
+- `tzatziki-spring-jpa` - JPA entity management steps
+
+**Configuration:**
+- Glue packages: `com.decathlon.tzatziki.steps` (built-in steps) + `fr.robinjesson.mybudgetapi.steps` (custom steps)
+- Feature files: `src/test/resources/features/`
+- Uses Testcontainers with PostgreSQL for isolated test database
+
+### Key Tzatziki Steps
+
+#### HTTP Steps (from `tzatziki-http`)
+
+```gherkin
+# Anonymous requests
+When we get "/endpoint"
+When we post "/endpoint":
+"""yml
+field: value
+"""
+When we put "/endpoint":
+When we delete "/endpoint"
+
+# Authenticated requests (user defined with custom step)
+When {user} get "/endpoint"
+When {user} post "/endpoint":
+When {user} put "/endpoint":
+When {user} delete "/endpoint"
+
+# Response assertions
+Then we receive a status OK_200
+Then we receive a status CREATED_201
+Then we receive a status NO_CONTENT_204
+Then we receive a status BAD_REQUEST_400
+Then we receive a status FORBIDDEN_403
+Then we receive a status NOT_FOUND_404
+
+# Response body assertions
+And we receive:
+"""yml
+field: expectedValue
+"""
+
+# Partial match (only specified fields)
+And we receive only:
+"""yml
+- name: item1
+- name: item2
+"""
+```
+
+#### JPA Entity Steps (from `tzatziki-spring-jpa`)
+
+```gherkin
+# Setup data BEFORE the scenario runs
+Given that the {EntityName} entities will contain:
+"""yml
+- field1: value1
+  field2: value2
+  relation.id: foreignKeyValue
+"""
+
+# Assert data AFTER an action
+And the {EntityName} entities contain:
+"""yml
+field: expectedValue
+"""
+
+# Assert with data from previous setup
+And that the {EntityName} entities contain:
+"""yml
+- field: value
+  relation.field: relatedValue
+"""
+```
+
+#### YAML Data Assertions (Tzatziki matchers)
+
+```gherkin
+# Null checks
+field: ?isNull
+field: ?notNull
+
+# Negation
+field: ?not expectedValue
+
+# Type checks
+field: ?isA String
+field: ?isA Number
+
+# Regex matching
+field: ?matches ^pattern.*$
+
+# Comparison
+field: ?greaterThan 10
+field: ?lessThan 100
+
+# Collection assertions
+list: ?hasSize 3
+list: ?contains value
+list: ?isEmpty
+```
+
+### Custom Steps (project-specific)
+
+Located in `src/test/java/fr/robinjesson/mybudgetapi/steps/StepDefinitions.java`:
+
+```gherkin
+# Create an authenticated user context (adds JWT cookie to requests)
+Given a user named {username}
+Given a user named {username} with password {password}
+```
 
 ### Test File Structure
 
@@ -102,20 +212,72 @@ exception/     → Custom exceptions and global exception handler
 Feature: [Feature Name]
 
   Background:
-    Given a user named [username]
-    And that the [Entity] entities will contain:
+    # Setup authenticated user
+    Given a user named robinj
+    # Setup test data in database
+    And that the UserEntity entities will contain:
     """yml
-    - field: value
+    - uid: robinj
+      email: robinj@email.fr
+      password: x
+    """
+    And that the AccountEntity entities will contain:
+    """yml
+    - name: compte 1
+      user.uid: robinj
+      startAmount: 10
     """
 
-  Scenario: [Scenario description]
-    When [user] [method] "[endpoint]"
-    Then we receive a status [STATUS_CODE]
+  Scenario: [Happy path description]
+    When robinj get "/endpoint"
+    Then we receive a status OK_200
     And we receive:
     """yml
-    expected: response
+    expectedField: expectedValue
     """
+
+  Scenario: [Authorization test - user can only access own resources]
+    Given a user named otherUser
+    When otherUser get "/endpoint/{id}"
+    Then we receive a status FORBIDDEN_403
+
+  Scenario: [Resource not found]
+    When robinj get "/endpoint/unknown-id"
+    Then we receive a status NOT_FOUND_404
 ```
+
+### Test Class Configuration
+
+**CucumberTest.java** - Main test runner:
+```java
+@RunWith(Cucumber.class)
+@CucumberOptions(
+    plugin = "pretty",
+    tags = "not @ignore",
+    features = "classpath:features",
+    glue = {
+        "fr.robinjesson.mybudgetapi.steps",
+        "com.decathlon.tzatziki.steps"
+    })
+public class CucumberTest {}
+```
+
+**AzertyApplicationSteps.java** - Spring Boot context with Testcontainers:
+```java
+@CucumberContextConfiguration
+@SpringBootTest(webEnvironment = RANDOM_PORT, classes = MyBudgetApplication.class)
+@ContextConfiguration(initializers = AzertyApplicationSteps.Initializer.class)
+public class AzertyApplicationSteps {
+    // PostgreSQL Testcontainer initialization
+}
+```
+
+### Test Scenarios to Cover
+
+1. **Happy path** - Normal successful operation
+2. **Authorization** - User can only access their own resources
+3. **Error cases** - 404 (not found), 403 (forbidden), 400 (bad request)
+4. **Edge cases** - Empty lists, null values, validation errors
 
 ---
 

@@ -89,18 +89,23 @@ exception/     → Custom exceptions and global exception handler
 
 ### Tzatziki Framework (by Decathlon)
 
-This project uses **Tzatziki**, a BDD testing framework created by Decathlon that extends Cucumber with powerful built-in steps for HTTP testing, JPA entity management, and YAML data formatting.
+This project uses **[Tzatziki](https://github.com/Decathlon/tzatziki)**, a BDD testing framework created by Decathlon that extends Cucumber with powerful built-in steps for HTTP testing, JPA entity management, and YAML/JSON data formatting.
+
+> Tzatziki provides ready-to-use Cucumber steps making it easy to TDD Java microservices by focusing on an outside-in testing strategy.
 
 **Tzatziki modules used:**
 - `tzatziki-common` - Core utilities and patterns
-- `tzatziki-http` - HTTP client steps for REST API testing
+- `tzatziki-core` - Object creation, assertion, templating and time management
+- `tzatziki-http` - HTTP client steps (wraps RestAssured) for REST API testing
 - `tzatziki-spring` - Spring Boot integration
-- `tzatziki-spring-jpa` - JPA entity management steps
+- `tzatziki-spring-jpa` - JPA entity management steps with Testcontainers
 
 **Configuration:**
 - Glue packages: `com.decathlon.tzatziki.steps` (built-in steps) + `fr.robinjesson.mybudgetapi.steps` (custom steps)
 - Feature files: `src/test/resources/features/`
 - Uses Testcontainers with PostgreSQL for isolated test database
+
+---
 
 ### Key Tzatziki Steps
 
@@ -122,7 +127,7 @@ When {user} post "/endpoint":
 When {user} put "/endpoint":
 When {user} delete "/endpoint"
 
-# Response assertions
+# Response status assertions (can use name, code, or both: OK, 200, OK_200)
 Then we receive a status OK_200
 Then we receive a status CREATED_201
 Then we receive a status NO_CONTENT_204
@@ -136,8 +141,21 @@ And we receive:
 field: expectedValue
 """
 
-# Partial match (only specified fields)
+# Status and body together
+Then we receive a status OK_200 and:
+"""yml
+message: Hello user!
+"""
+
+# Partial match (only specified fields, ignores extra fields)
 And we receive only:
+"""yml
+- name: item1
+- name: item2
+"""
+
+# Exact match with order
+And we receive exactly:
 """yml
 - name: item1
 - name: item2
@@ -147,7 +165,7 @@ And we receive only:
 #### JPA Entity Steps (from `tzatziki-spring-jpa`)
 
 ```gherkin
-# Setup data BEFORE the scenario runs
+# Setup data BEFORE the scenario runs (uses "will contain")
 Given that the {EntityName} entities will contain:
 """yml
 - field1: value1
@@ -155,46 +173,125 @@ Given that the {EntityName} entities will contain:
   relation.id: foreignKeyValue
 """
 
-# Assert data AFTER an action
-And the {EntityName} entities contain:
+# Setup with table format (alternative)
+Given that the users table will contain:
+   | firstName | lastName |
+   | Darth     | Vader    |
+
+# Clear table and insert only these rows
+Given that the {EntityName} entities will contain only:
+"""yml
+- field: value
+"""
+
+# Assert data AFTER an action (uses "contain" without "will")
+Then the {EntityName} entities contain:
 """yml
 field: expectedValue
 """
 
-# Assert with data from previous setup
-And that the {EntityName} entities contain:
+# Assert table is empty
+Then the users table contains nothing
+
+# Assert with relationships (dot notation for foreign keys)
+And the AccountEntity entities contain:
 """yml
-- field: value
-  relation.field: relatedValue
+- name: new account
+  user.uid: robinj
 """
 ```
 
-#### YAML Data Assertions (Tzatziki matchers)
+**Important:** With Hibernate 6.6+ / Spring Boot 3.4+, you cannot manually specify auto-generated IDs. Let the database generate them. For parent-child relationships, IDs follow predictable sequences starting at 1 (reset per scenario).
+
+#### Assertion Flags (from `tzatziki-core`)
+
+Tzatziki provides powerful assertion flags for flexible matching:
 
 ```gherkin
 # Null checks
 field: ?isNull
 field: ?notNull
 
-# Negation
+# Equality and negation
+field: ?eq expectedValue
+field: ?== expectedValue
 field: ?not expectedValue
+field: ?!= expectedValue
+
+# Comparison operators
+field: ?gt 10          # greater than
+field: ?> 10
+field: ?ge 10          # greater or equal
+field: ?>= 10
+field: ?lt 100         # less than
+field: ?< 100
+field: ?le 100         # less or equal
+field: ?<= 100
+
+# String matching
+field: ?e ^pattern.*$  # regex matching
+field: ?contains text
+field: ?doesNotContain text
+
+# Collection/Set membership
+field: ?in ["a", "b", "c"]
+field: ?notIn ["x", "y"]
 
 # Type checks
-field: ?isA String
-field: ?isA Number
+field: ?is Boolean
+field: ?is Number
+field: ?isUUID
 
-# Regex matching
-field: ?matches ^pattern.*$
+# Date/Time assertions
+field: ?before {{@now}}
+field: ?after {{@now}}
 
-# Comparison
-field: ?greaterThan 10
-field: ?lessThan 100
-
-# Collection assertions
-list: ?hasSize 3
-list: ?contains value
-list: ?isEmpty
+# Base64
+field: ?base64 originalValue
 ```
+
+#### Object Comparison Methods
+
+```gherkin
+# Contains at least the expected elements
+Then response contains:
+
+# Contains at least, in order
+Then response contains in order:
+
+# Contains only these elements (no extras)
+Then response contains only:
+
+# Contains only, in order
+Then response contains only and in order:
+
+# Exact match (same values)
+Then response is equal to:
+
+# Exactly these elements (literally)
+Then response contains exactly:
+```
+
+---
+
+### Templating with Handlebars
+
+Tzatziki uses [Handlebars](https://github.com/jknack/handlebars.java) for templating. Variables from the context can be injected:
+
+```gherkin
+Given that userId is "123"
+When we get "/users/{{userId}}"
+
+# Assign variables while templating
+Given that user is a User:
+"""yml
+id: 1
+name: {{{[userName: bob]}}}
+"""
+Then userName is equal to "bob"
+```
+
+---
 
 ### Custom Steps (project-specific)
 
@@ -205,6 +302,8 @@ Located in `src/test/java/fr/robinjesson/mybudgetapi/steps/StepDefinitions.java`
 Given a user named {username}
 Given a user named {username} with password {password}
 ```
+
+---
 
 ### Test File Structure
 
@@ -246,6 +345,8 @@ Feature: [Feature Name]
     Then we receive a status NOT_FOUND_404
 ```
 
+---
+
 ### Test Class Configuration
 
 **CucumberTest.java** - Main test runner:
@@ -271,6 +372,8 @@ public class AzertyApplicationSteps {
     // PostgreSQL Testcontainer initialization
 }
 ```
+
+---
 
 ### Test Scenarios to Cover
 

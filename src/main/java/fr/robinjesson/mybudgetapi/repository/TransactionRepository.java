@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -21,5 +22,6 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
     @Query("SELECT COALESCE(SUM(t.amount), 0) FROM TransactionEntity t WHERE t.account.uuid = :accountId")
     BigDecimal sumTotalAmountByAccount(@Param("accountId") UUID accountId);
 
+    List<TransactionEntity> findByAccountUuid(@Param("uuid") UUID accountUuid);
 
 }

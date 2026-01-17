@@ -8,7 +8,6 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "transaction")
@@ -20,8 +19,8 @@ import java.util.UUID;
 public class TransactionEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_account_uuid", nullable = false)

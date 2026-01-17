@@ -12,10 +12,8 @@ import fr.robinjesson.mybudgetapi.security.ConnectedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,52 +24,28 @@ public class TransactionBusiness {
     private final TagRepository tagRepository;
     private final ConnectedUser connectedUser;
 
-    public TransactionEntity createTransaction(final UUID accountUuid, final TransactionEntity transactionEntity) {
-        final AccountEntity account = accountRepository.findById(accountUuid)
-                .orElseThrow(() -> new NotFoundException("Account not found with uuid " + accountUuid));
+    public TransactionEntity findConcreteById(final Long transactionId) {
+        final var transaction = transactionRepository.findConcreteById(transactionId);
+        if (!transaction.getAccount().getUser().getUid().equals(connectedUser.getUid()))
+            throw new ForbiddenException("Access denied to account " + transaction.getAccount().getId());
+        return transaction;
+    }
 
-        if (!account.getUser().getUid().equals(connectedUser.getUid())) {
-            throw new ForbiddenException("Access denied to account " + accountUuid);
-        }
-
-        transactionEntity.setAccount(account);
-        transactionEntity.setTransactionDate(LocalDate.now());
-        transactionEntity.setIsPointed(false);
-        transactionEntity.setIsReconciled(false);
-
+    public TransactionEntity save(final TransactionEntity transactionEntity, final AccountEntity account) {
+        if (!account.getUser().getUid().equals(connectedUser.getUid()))
+            throw new ForbiddenException("Access denied to account " + account.getId());
         return transactionRepository.save(transactionEntity);
     }
 
-    public TransactionEntity updateTransaction(final UUID accountUuid, final UUID transactionUuid, final TransactionEntity transactionData, final Set<TagEntity> tags) {
-        final AccountEntity account = accountRepository.findById(accountUuid)
-                .orElseThrow(() -> new NotFoundException("Account not found with uuid " + accountUuid));
+    public List<TransactionEntity> findTransactionsByAccount(final Long accountId) {
+        final AccountEntity account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new NotFoundException("Account not found with uuid " + accountId));
 
         if (!account.getUser().getUid().equals(connectedUser.getUid())) {
-            throw new ForbiddenException("Access denied to account " + accountUuid);
+            throw new ForbiddenException("Access denied to account " + accountId);
         }
 
-        final TransactionEntity transaction = transactionRepository.findById(transactionUuid)
-                .orElseThrow(() -> new NotFoundException("Transaction not found with uuid " + transactionUuid));
-
-        if (!transaction.getAccount().getUuid().equals(accountUuid)) {
-            throw new ForbiddenException("Transaction does not belong to account " + accountUuid);
-        }
-
-        transaction.setAmount(transactionData.getAmount());
-        transaction.setTags(tags);
-
-        return transactionRepository.save(transaction);
-    }
-
-    public List<TransactionEntity> findTransactionsByAccount(final UUID accountUuid) {
-        final AccountEntity account = accountRepository.findById(accountUuid)
-                .orElseThrow(() -> new NotFoundException("Account not found with uuid " + accountUuid));
-
-        if (!account.getUser().getUid().equals(connectedUser.getUid())) {
-            throw new ForbiddenException("Access denied to account " + accountUuid);
-        }
-
-        return transactionRepository.findByAccountUuid(accountUuid);
+        return transactionRepository.findByAccountId(accountId);
     }
 
     public Set<TagEntity> resolveTagsFromLabels(final Set<String> tagLabels) {

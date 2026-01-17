@@ -6,12 +6,11 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter
 public class TransactionResponse {
-    private UUID uuid;
+    private Long id;
     private BigDecimal amount;
     private LocalDate transactionDate;
     private Boolean isPointed;

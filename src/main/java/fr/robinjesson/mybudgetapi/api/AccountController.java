@@ -18,9 +18,9 @@ public class AccountController {
 
     private final AccountAdapter accountAdapter;
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<AccountResponse> findById(final UUID uuid) {
-        return ResponseEntity.ok(accountAdapter.findConcreteById(uuid));
+    @GetMapping("/{id}")
+    public ResponseEntity<AccountResponse> findById(final Long id) {
+        return ResponseEntity.ok(accountAdapter.findConcreteById(id));
     }
 
     @GetMapping

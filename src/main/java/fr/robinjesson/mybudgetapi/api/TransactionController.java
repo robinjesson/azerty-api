@@ -18,18 +18,18 @@ public class TransactionController {
     private final TransactionAdapter transactionAdapter;
 
     @PostMapping
-    public ResponseEntity<TransactionResponse> createTransaction(@PathVariable final UUID accountUuid, @RequestBody final TransactionRequest request) {
-        return new ResponseEntity<>(transactionAdapter.createTransaction(accountUuid, request), HttpStatus.CREATED);
+    public ResponseEntity<TransactionResponse> createTransaction(@RequestParam final Long accountId, @RequestBody final TransactionRequest request) {
+        return new ResponseEntity<>(transactionAdapter.createTransaction(accountId, request), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{transactionUuid}")
-    public ResponseEntity<TransactionResponse> updateTransaction(@PathVariable final UUID accountUuid, @PathVariable final UUID transactionUuid, @RequestBody final TransactionRequest request) {
-        return ResponseEntity.ok(transactionAdapter.updateTransaction(accountUuid, transactionUuid, request));
+    @PutMapping("/{transactionId}")
+    public ResponseEntity<TransactionResponse> updateTransaction(@PathVariable final Long transactionId, @RequestBody final TransactionRequest request) {
+        return ResponseEntity.ok(transactionAdapter.updateTransaction(transactionId, request));
     }
 
     @GetMapping
-    public ResponseEntity<List<TransactionResponse>> findTransactionsByAccount(@PathVariable final UUID accountUuid) {
-        return ResponseEntity.ok(transactionAdapter.findTransactionsByAccount(accountUuid));
+    public ResponseEntity<List<TransactionResponse>> findTransactionsByAccount(@RequestParam final Long accountId) {
+        return ResponseEntity.ok(transactionAdapter.findTransactionsByAccount(accountId));
     }
 }
 

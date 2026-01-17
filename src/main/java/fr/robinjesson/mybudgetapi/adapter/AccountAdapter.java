@@ -18,8 +18,8 @@ public class AccountAdapter {
     private final AccountBusiness accountBusiness;
     private final AccountMapper accountMapper;
 
-    public AccountResponse findConcreteById(final UUID uuid) {
-        final AccountEntity accountEntitiy = accountBusiness.findConcreteById(uuid);
+    public AccountResponse findConcreteById(final Long id) {
+        final AccountEntity accountEntitiy = accountBusiness.findConcreteById(id);
         return accountMapper.mapToResponse(accountEntitiy);
     }
 

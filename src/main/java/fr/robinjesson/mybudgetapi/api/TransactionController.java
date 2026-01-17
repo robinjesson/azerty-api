@@ -1,7 +1,7 @@
 package fr.robinjesson.mybudgetapi.api;
 
 import fr.robinjesson.mybudgetapi.adapter.TransactionAdapter;
-import fr.robinjesson.mybudgetapi.api.request.TransactionCreationRequest;
+import fr.robinjesson.mybudgetapi.api.request.TransactionRequest;
 import fr.robinjesson.mybudgetapi.api.response.TransactionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ public class TransactionController {
     private final TransactionAdapter transactionAdapter;
 
     @PostMapping
-    public ResponseEntity<TransactionResponse> createTransaction(@PathVariable final UUID accountUuid, @RequestBody final TransactionCreationRequest request) {
+    public ResponseEntity<TransactionResponse> createTransaction(@PathVariable final UUID accountUuid, @RequestBody final TransactionRequest request) {
         return new ResponseEntity<>(transactionAdapter.createTransaction(accountUuid, request), HttpStatus.CREATED);
     }
 

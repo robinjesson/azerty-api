@@ -42,7 +42,7 @@ public class TransactionBusiness {
         return transactionRepository.save(transactionEntity);
     }
 
-    public TransactionEntity updateTransaction(final UUID accountUuid, final UUID transactionUuid, final TransactionEntity updateData) {
+    public TransactionEntity updateTransaction(final UUID accountUuid, final UUID transactionUuid, final TransactionEntity transactionData, final Set<TagEntity> tags) {
         final AccountEntity account = accountRepository.findById(accountUuid)
                 .orElseThrow(() -> new NotFoundException("Account not found with uuid " + accountUuid));
 
@@ -57,10 +57,8 @@ public class TransactionBusiness {
             throw new ForbiddenException("Transaction does not belong to account " + accountUuid);
         }
 
-        transaction.setAmount(updateData.getAmount());
-        if (updateData.getTags() != null && !updateData.getTags().isEmpty()) {
-            transaction.setTags(updateData.getTags());
-        }
+        transaction.setAmount(transactionData.getAmount());
+        transaction.setTags(tags);
 
         return transactionRepository.save(transaction);
     }

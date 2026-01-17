@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class TransactionCreationRequest {
+public class TransactionRequest {
     @NotNull
     private BigDecimal amount;
 

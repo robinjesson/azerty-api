@@ -2,7 +2,6 @@ package fr.robinjesson.mybudgetapi.api;
 
 import fr.robinjesson.mybudgetapi.adapter.TransactionAdapter;
 import fr.robinjesson.mybudgetapi.api.request.TransactionCreationRequest;
-import fr.robinjesson.mybudgetapi.api.request.TransactionUpdateRequest;
 import fr.robinjesson.mybudgetapi.api.response.TransactionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,7 @@ public class TransactionController {
     }
 
     @PutMapping("/{transactionUuid}")
-    public ResponseEntity<TransactionResponse> updateTransaction(@PathVariable final UUID accountUuid, @PathVariable final UUID transactionUuid, @RequestBody final TransactionUpdateRequest request) {
+    public ResponseEntity<TransactionResponse> updateTransaction(@PathVariable final UUID accountUuid, @PathVariable final UUID transactionUuid, @RequestBody final TransactionRequest request) {
         return ResponseEntity.ok(transactionAdapter.updateTransaction(accountUuid, transactionUuid, request));
     }
 

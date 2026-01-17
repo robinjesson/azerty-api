@@ -1,7 +1,6 @@
 package fr.robinjesson.mybudgetapi.adapter;
 
 import fr.robinjesson.mybudgetapi.api.request.TransactionCreationRequest;
-import fr.robinjesson.mybudgetapi.api.request.TransactionUpdateRequest;
 import fr.robinjesson.mybudgetapi.api.response.TransactionResponse;
 import fr.robinjesson.mybudgetapi.businesses.TransactionBusiness;
 import fr.robinjesson.mybudgetapi.entities.TransactionEntity;
@@ -27,7 +26,7 @@ public class TransactionAdapter {
         return transactionMapper.mapToResponse(savedTransaction);
     }
 
-    public TransactionResponse updateTransaction(final UUID accountUuid, final UUID transactionUuid, final TransactionUpdateRequest request) {
+    public TransactionResponse updateTransaction(final UUID accountUuid, final UUID transactionUuid, final TransactionRequest request) {
         final TransactionEntity updateData = new TransactionEntity();
         updateData.setAmount(request.getAmount());
         final var tags = transactionBusiness.resolveTagsFromLabels(request.getTagLabels());

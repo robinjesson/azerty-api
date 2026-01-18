@@ -1,27 +1,13 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-    environment:
-      DB_URL: jdbc:postgresql://db:5432/azerty-db-local
-      DB_USER: postgres
-      DB_PASSWORD: mot_de_passe
-      JWT_SECRET_KEY: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
-
   db:
-    image: postgres:latest
+    image: postgres:17-alpine
     restart: always
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: azerty-db-local
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mot_de_passe
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
 

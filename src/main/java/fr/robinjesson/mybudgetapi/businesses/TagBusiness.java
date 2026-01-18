@@ -1,6 +1,5 @@
 package fr.robinjesson.mybudgetapi.businesses;
 
-import fr.robinjesson.mybudgetapi.api.response.TagResponse;
 import fr.robinjesson.mybudgetapi.entities.TagEntity;
 import fr.robinjesson.mybudgetapi.repository.TagRepository;
 import fr.robinjesson.mybudgetapi.repository.UserRepository;

@@ -23,7 +23,7 @@ public class TransactionEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_account_uuid", nullable = false)
+    @JoinColumn(name = "fk_account_id", nullable = false)
     private AccountEntity account;
 
     @Column(nullable = false)
@@ -43,11 +43,11 @@ public class TransactionEntity {
     private Boolean isReconciled;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_recurring_payment_uuid")
+    @JoinColumn(name = "fk_recurring_payment_id")
     private RecurringPaymentEntity recurringPayment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_transfer_uuid")
+    @JoinColumn(name = "fk_transfer_id")
     private TransferEntity transfer;
 
     private LocalDate deferredDebitDate;
@@ -55,7 +55,7 @@ public class TransactionEntity {
     @OneToMany
     @JoinTable(
             name = "transaction_tag",
-            joinColumns = @JoinColumn(name = "fk_transaction_uuid"),
+            joinColumns = @JoinColumn(name = "fk_transaction_id"),
             inverseJoinColumns = @JoinColumn(name = "fk_tag_label")
     )
     private Set<TagEntity> tags;

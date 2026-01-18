@@ -19,7 +19,7 @@ public class RecurringPaymentEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_account_entity_uuid", nullable = false)
+    @JoinColumn(name = "fk_account_entity_id", nullable = false)
     private AccountEntity accountEntity;
 
     private String description;

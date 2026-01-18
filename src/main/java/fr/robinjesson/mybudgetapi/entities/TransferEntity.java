@@ -19,11 +19,11 @@ public class TransferEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_source_account_uuid", nullable = false)
+    @JoinColumn(name = "fk_source_account_id", nullable = false)
     private AccountEntity sourceAccount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_destination_account_uuid", nullable = false)
+    @JoinColumn(name = "fk_destination_account_id", nullable = false)
     private AccountEntity destinationAccount;
 
     @Column(nullable = false)

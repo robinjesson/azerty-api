@@ -26,7 +26,7 @@ public class BudgetEntity {
     private LocalDate dueDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_target_account_uuid")
+    @JoinColumn(name = "fk_target_account_id")
     private AccountEntity targetAccount;
 
     @Column(nullable = false)

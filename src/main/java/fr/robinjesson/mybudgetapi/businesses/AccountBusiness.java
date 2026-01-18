@@ -2,7 +2,6 @@ package fr.robinjesson.mybudgetapi.businesses;
 
 import fr.robinjesson.mybudgetapi.entities.AccountEntity;
 import fr.robinjesson.mybudgetapi.exception.ForbiddenException;
-import fr.robinjesson.mybudgetapi.exception.NotFoundException;
 import fr.robinjesson.mybudgetapi.repository.AccountRepository;
 import fr.robinjesson.mybudgetapi.repository.UserRepository;
 import fr.robinjesson.mybudgetapi.security.ConnectedUser;
@@ -10,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor

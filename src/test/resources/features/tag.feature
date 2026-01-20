@@ -21,7 +21,7 @@ Feature: Tag
       owner.uid: user2
     """
 
-  Scenario: when calling actuator then return 200
+  Scenario: user can retrieve only their own tags
     When robinj get "/tags"
     Then we receive a status OK_200
     And we receive only:

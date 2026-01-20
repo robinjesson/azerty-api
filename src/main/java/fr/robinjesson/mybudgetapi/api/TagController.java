@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/tags")
@@ -17,7 +17,7 @@ public class TagController {
     private final TagAdapter tagAdapter;
 
     @GetMapping
-    public ResponseEntity<Set<TagResponse>> findAllTagsForConnectedUser() {
+    public ResponseEntity<List<TagResponse>> findAllTagsForConnectedUser() {
         return ResponseEntity.ok(tagAdapter.findAllTagsByUser());
     }
 

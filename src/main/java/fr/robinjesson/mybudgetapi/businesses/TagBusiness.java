@@ -7,6 +7,7 @@ import fr.robinjesson.mybudgetapi.security.ConnectedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -20,8 +21,10 @@ public class TagBusiness {
         return tagRepository.findConcreteById(label);
     }
 
-    public Set<TagEntity> findAllTagsByUser() {
-        return tagRepository.findAllByOwnerUid(connectedUser.getUid());
+    public List<TagEntity> findAllTagsByUser() {
+//        return tagRepository.findAllByOwnerUid(connectedUser.getUid());
+        final var res = tagRepository.findAll();
+        return res;
     }
 
     public TagEntity createTagForConnectedUser(final TagEntity tagEntity) {

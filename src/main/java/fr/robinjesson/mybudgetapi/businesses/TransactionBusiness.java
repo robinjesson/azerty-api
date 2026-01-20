@@ -48,14 +48,14 @@ public class TransactionBusiness {
         return transactionRepository.findByAccountId(accountId);
     }
 
-    public Set<TagEntity> resolveTagsFromLabels(final Set<String> tagLabels) {
-        final Set<TagEntity> userTags = tagRepository.findAllByOwnerUid(connectedUser.getUid());
+    public List<TagEntity> resolveTagsFromLabels(final Set<String> tagLabels) {
+        final List<TagEntity> userTags = tagRepository.findAllByOwnerUid(connectedUser.getUid());
         return tagLabels.stream()
                 .map(label -> userTags.stream()
                         .filter(tag -> tag.getLabel().equals(label))
                         .findFirst()
                         .orElseThrow(() -> new NotFoundException("Tag not found with label " + label)))
-                .collect(Collectors.toSet());
+                .toList();
     }
 }
 

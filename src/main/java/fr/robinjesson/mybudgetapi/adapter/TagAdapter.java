@@ -8,7 +8,7 @@ import fr.robinjesson.mybudgetapi.mappers.TagMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,8 +16,8 @@ public class TagAdapter {
     private final TagBusiness tagBusiness;
     private final TagMapper tagMapper;
 
-    public Set<TagResponse> findAllTagsByUser() {
-        final Set<TagEntity> tagEntities = tagBusiness.findAllTagsByUser();
+    public List<TagResponse> findAllTagsByUser() {
+        final List<TagEntity> tagEntities = tagBusiness.findAllTagsByUser();
         return tagMapper.mapToResponse(tagEntities);
     }
 

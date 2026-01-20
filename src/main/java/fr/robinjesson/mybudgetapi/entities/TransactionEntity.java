@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "transaction")
@@ -58,7 +58,7 @@ public class TransactionEntity {
             joinColumns = @JoinColumn(name = "fk_transaction_id"),
             inverseJoinColumns = @JoinColumn(name = "fk_tag_label")
     )
-    private Set<TagEntity> tags;
+    private List<TagEntity> tags;
 
     @Embedded
     private Timestamp timestamp;

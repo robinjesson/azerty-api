@@ -6,13 +6,13 @@ import fr.robinjesson.mybudgetapi.entities.TagEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-import java.util.Set;
+import java.util.List;
 
 @Mapper(config = MapperConfiguration.class)
 public interface TagMapper {
     TagEntity mapToEntity(TagRequest source);
 
-    Set<TagResponse> mapToResponse(Set<TagEntity> sources);
+    List<TagResponse> mapToResponse(List<TagEntity> sources);
     TagResponse mapToResponse(TagEntity source);
 
     void mapToExistingEntity(@MappingTarget TagEntity target, TagRequest source);

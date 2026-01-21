@@ -28,3 +28,5 @@ azerty-api/
 target/
 
 .idea/
+
+/.env

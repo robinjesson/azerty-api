@@ -36,7 +36,7 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=robinjesson_azerty-api
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=robinjesson_my-budget-api
 
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/maven-3-jdk-22@master

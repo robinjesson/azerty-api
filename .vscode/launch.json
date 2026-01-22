@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MyBudgetApplication<azerty-api>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "fr.robinjesson.mybudgetapi.MyBudgetApplication",
+            "projectName": "azerty-api",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

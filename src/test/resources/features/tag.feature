@@ -13,11 +13,14 @@ Feature: Tag
     """
     And that the TagEntity entities will contain:
     """yml
-    - label: tag 1 robinj
+    - label: cb
+      category: PAYMENT_MEAN
       owner.uid: robinj
-    - label: tag 2 robinj
+    - label: decathlon
+      category: LOCATION
       owner.uid: robinj
-    - label: tag 1 user2
+    - label: paye
+      category: CATEGORY
       owner.uid: user2
     """
 
@@ -26,6 +29,25 @@ Feature: Tag
     Then we receive a status OK_200
     And we receive only:
     """yml
-    - label: tag 1 robinj
-    - label: tag 2 robinj
+    - label: cb
+    - label: decathlon
+    """
+
+  Scenario: user can create their own tag
+    When robinj post "/tags":
+    """yml
+    label: cb
+    category: PAYMENT_MEAN
+    """
+    Then we receive a status CREATED_201
+    And we receive only:
+    """yml
+    label: cb
+    category: PAYMENT_MEAN
+    """
+    And the TagEntity entities contain:
+    """yml
+    - label: cb
+      category: PAYMENT_MEAN
+      owner.uid: robinj
     """

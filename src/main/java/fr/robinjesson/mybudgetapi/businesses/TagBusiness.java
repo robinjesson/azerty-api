@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +21,7 @@ public class TagBusiness {
     }
 
     public List<TagEntity> findAllTagsByUser() {
-//        return tagRepository.findAllByOwnerUid(connectedUser.getUid());
-        final var res = tagRepository.findAll();
-        return res;
+        return tagRepository.findAllByOwnerUid(connectedUser.getUid());
     }
 
     public TagEntity createTagForConnectedUser(final TagEntity tagEntity) {

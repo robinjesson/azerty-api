@@ -14,7 +14,6 @@ Feature: Tag
     And that the TagEntity entities will contain:
     """yml
     - label: cb
-      category: PAYMENT_MEAN
       owner.uid: robinj
     - label: decathlon
       category: LOCATION
@@ -31,6 +30,7 @@ Feature: Tag
     """yml
     - label: cb
     - label: decathlon
+      category: LOCATION
     """
 
   Scenario: user can create their own tag

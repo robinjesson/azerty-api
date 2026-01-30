@@ -149,6 +149,22 @@ Feature: [Feature Name]
     expectedField: expectedValue
     """
 
+  Scenario: [POST/PUT - Verify DB state after success]
+    When robinj post "/endpoint":
+    """yml
+    field: value
+    """
+    Then we receive a status CREATED_201
+    And we receive:
+    """yml
+    field: value
+    """
+    And that the [Entity]Entity entities contain:
+    """yml
+    - field: value
+      otherField: expectedValue
+    """
+
   Scenario: [Authorization test - user can only access own resources]
     Given a user named otherUser
     When otherUser get "/endpoint/{id}"
@@ -158,6 +174,25 @@ Feature: [Feature Name]
     When robinj get "/endpoint/unknown-id"
     Then we receive a status NOT_FOUND_404
 ```
+
+**Important Tzatziki Testing Rules:**
+
+1. **Auto-generated IDs**: Hibernate generates IDs sequentially (1, 2, 3...) in order of entity creation
+   - First account created in a scenario will have `id: 1`
+   - Second will have `id: 2`, etc.
+   - Use these numeric IDs in requests: `GET /transactions?accountId=1`
+
+2. **Always verify database state after POST/PUT**:
+   - Add `And that the [Entity]Entity entities contain:` after successful mutations
+   - Verify key fields were correctly saved/updated
+   - Avoid verifying complex nested relations (causes LazyInitializationException)
+   - Verify simple fields: IDs, amounts, types, booleans, dates, FK IDs
+
+3. **Avoid LazyInitializationException**:
+   - Don't verify `@ManyToMany` or `@OneToMany` collections in DB assertions
+   - Verify collections in HTTP response instead (where they're properly loaded)
+   - Use `fetch = FetchType.LAZY` for complex relations
+   - Only verify direct fields and foreign key IDs in DB assertions
 
 ---
 
@@ -192,7 +227,9 @@ public class AzertyApplicationSteps {
 ### Test Scenarios to Cover
 
 1. **Happy path** - Normal successful operation
-2. **Authorization** - User can only access their own resources
+   - Verify HTTP response body
+   - **ALWAYS verify database state** with `And that the [Entity]Entity entities contain:`
+2. **Authorization** - User can only access their own resources (403)
 3. **Error cases** - 404 (not found), 403 (forbidden), 400 (bad request)
 4. **Edge cases** - Empty lists, null values, validation errors
 

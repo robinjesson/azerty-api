@@ -49,6 +49,14 @@ Feature: Transaction
       - label: alimentation
       - label: transport
     """
+    And that the TransactionEntity entities contain:
+    """yml
+    - account.id: 1
+      amount: 50.00
+      transactionType: EXPENSE
+      isPointed: false
+      isReconciled: false
+    """
 
 
   Scenario: Un utilisateur ne peut pas créer une transaction sur le compte d'un autre utilisateur
@@ -104,6 +112,16 @@ Feature: Transaction
       - alimentation
     """
     Then we receive a status OK_200
+    And that the TransactionEntity entities contain:
+    """yml
+    - id: 1
+      account.id: 1
+      amount: 75.00
+      transactionType: INCOME
+      transactionDate: 2026-01-15
+      isPointed: false
+      isReconciled: false
+    """
 
 
   Scenario: Un utilisateur ne peut pas modifier la transaction d'un autre utilisateur

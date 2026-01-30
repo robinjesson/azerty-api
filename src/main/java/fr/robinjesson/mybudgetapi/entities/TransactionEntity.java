@@ -56,7 +56,7 @@ public class TransactionEntity {
     @JoinTable(
             name = "transaction_tag",
             joinColumns = @JoinColumn(name = "fk_transaction_id"),
-            inverseJoinColumns = @JoinColumn(name = "fk_tag_label")
+            inverseJoinColumns = @JoinColumn(name = "fk_tag_id")
     )
     private List<TagEntity> tags;
 

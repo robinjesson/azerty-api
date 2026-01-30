@@ -20,6 +20,7 @@ public interface TransactionRepository extends FineRepository<TransactionEntity,
     @Query("SELECT COALESCE(SUM(t.amount), 0) FROM TransactionEntity t WHERE t.account.id = :accountId")
     BigDecimal sumTotalAmountByAccount(@Param("accountId") Long accountId);
 
-    List<TransactionEntity> findByAccountId(@Param("uuid") Long accountId);
+    @Query("SELECT DISTINCT t FROM TransactionEntity t LEFT JOIN FETCH t.tags WHERE t.account.id = :accountId")
+    List<TransactionEntity> findByAccountId(@Param("accountId") Long accountId);
 
 }

@@ -29,7 +29,7 @@ public class TagAdapter {
     }
 
     public TagResponse updateTagForConnectedUser(final String label,final TagRequest tagRequest) {
-        final TagEntity tagEntity = tagBusiness.findConcreteById(label);
+        final TagEntity tagEntity = tagBusiness.findConcreteByLabelAndUser(label);
         tagMapper.mapToExistingEntity(tagEntity, tagRequest);
         final TagEntity updatedTag = tagBusiness.updateTagForConnectedUser(tagEntity);
         return tagMapper.mapToResponse(updatedTag);

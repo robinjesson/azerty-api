@@ -1,5 +1,6 @@
 package fr.robinjesson.mybudgetapi.api.response;
 
+import fr.robinjesson.mybudgetapi.entities.enums.TransactionTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.util.Set;
 @Setter
 public class TransactionResponse {
     private Long id;
+    private TransactionTypeEnum transactionType;
     private BigDecimal amount;
     private LocalDate transactionDate;
     private Boolean isPointed;

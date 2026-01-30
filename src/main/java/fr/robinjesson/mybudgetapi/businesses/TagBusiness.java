@@ -1,6 +1,7 @@
 package fr.robinjesson.mybudgetapi.businesses;
 
 import fr.robinjesson.mybudgetapi.entities.TagEntity;
+import fr.robinjesson.mybudgetapi.exception.ForbiddenException;
 import fr.robinjesson.mybudgetapi.exception.NotFoundException;
 import fr.robinjesson.mybudgetapi.repository.TagRepository;
 import fr.robinjesson.mybudgetapi.repository.UserRepository;
@@ -17,8 +18,9 @@ public class TagBusiness {
     private final ConnectedUser connectedUser;
     private final UserRepository userRepository;
 
-    public TagEntity findConcreteById(final String label) {
-        return tagRepository.findConcreteById(label);
+    public TagEntity findConcreteByLabelAndUser(final String label) {
+        return tagRepository.findByLabelAndOwnerUid(label, connectedUser.getUid())
+                .orElseThrow(() -> new NotFoundException("Tag not found with label: " + label + " for user " + connectedUser.getUid()));
     }
 
     public List<TagEntity> findAllTagsByUser() {
@@ -34,7 +36,7 @@ public class TagBusiness {
 
     public TagEntity updateTagForConnectedUser(final TagEntity tagEntity) {
         if(!tagEntity.getOwner().getUid().equals(connectedUser.getUid()))
-            throw new IllegalStateException("Cannot update tag not owned by the connected user");
+            throw new ForbiddenException("Cannot update tag not owned by the connected user");
         return tagRepository.save(tagEntity);
     }
 

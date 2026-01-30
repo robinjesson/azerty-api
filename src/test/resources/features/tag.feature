@@ -36,18 +36,18 @@ Feature: Tag
   Scenario: user can create their own tag
     When robinj post "/tags":
     """yml
-    label: cb
+    label: carrefour
     category: PAYMENT_MEAN
     """
     Then we receive a status CREATED_201
     And we receive only:
     """yml
-    label: cb
+    label: carrefour
     category: PAYMENT_MEAN
     """
     And the TagEntity entities contain:
     """yml
-    - label: cb
+    - label: carrefour
       category: PAYMENT_MEAN
       owner.uid: robinj
     """

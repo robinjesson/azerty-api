@@ -59,7 +59,7 @@ public class TransactionBusiness {
                 .map(label -> userTags.stream()
                         .filter(tag -> tag.getLabel().equals(label))
                         .findFirst()
-                        .orElse(tagRepository.save(TagEntity.builder().label(label).owner(owner).build())))
+                        .orElseGet(() -> tagRepository.save(TagEntity.builder().label(label).owner(owner).build())))
                 .toList();
     }
 }

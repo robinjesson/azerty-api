@@ -67,8 +67,8 @@ exception/     → Custom exceptions and global exception handler
 ### Entity Guidelines
 
 - All entities extend or embed `Timestamp` for audit fields
-- Use `@GeneratedValue(strategy = GenerationType.UUID)` for primary keys
-- Use `UUID` type for identifiers
+- Use `@GeneratedValue(strategy = GenerationType.IDENTITY)` for primary keys
+- Use `Long` type for identifiers
 
 ### MapStruct Configuration
 

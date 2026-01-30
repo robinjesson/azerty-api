@@ -43,7 +43,7 @@ public class TransactionBusiness {
 
     public List<TransactionEntity> findTransactionsByAccount(final Long accountId) {
         final AccountEntity account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new NotFoundException("Account not found with uuid " + accountId));
+                .orElseThrow(() -> new NotFoundException("Account not found with id " + accountId));
 
         if (!account.getUser().getUid().equals(connectedUser.getUid())) {
             throw new ForbiddenException("Access denied to account " + accountId);

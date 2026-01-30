@@ -235,7 +235,7 @@ Feature: Transaction
   Scenario: Un utilisateur récupère une liste vide si le compte n'a pas de transactions
     Given that the AccountEntity entities will contain:
     """yml
-    - name: compte 2
+    - name: compte 1
       user.uid: robinj
       startAmount: 200
     """

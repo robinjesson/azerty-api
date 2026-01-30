@@ -1,6 +1,7 @@
 package fr.robinjesson.mybudgetapi.businesses;
 
 import fr.robinjesson.mybudgetapi.entities.TagEntity;
+import fr.robinjesson.mybudgetapi.exception.NotFoundException;
 import fr.robinjesson.mybudgetapi.repository.TagRepository;
 import fr.robinjesson.mybudgetapi.repository.UserRepository;
 import fr.robinjesson.mybudgetapi.security.ConnectedUser;
@@ -28,7 +29,7 @@ public class TagBusiness {
         return userRepository.findById(connectedUser.getUid()).map(user -> {
             tagEntity.setOwner(user);
             return tagRepository.save(tagEntity);
-        }).orElseThrow(() -> new IllegalStateException("User not found for UID " + connectedUser.getUid()));
+        }).orElseThrow(() -> new NotFoundException("User not found for UID " + connectedUser.getUid()));
     }
 
     public TagEntity updateTagForConnectedUser(final TagEntity tagEntity) {

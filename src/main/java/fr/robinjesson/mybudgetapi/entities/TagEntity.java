@@ -11,8 +11,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(onlyExplicitlyIncluded = true)
 public class TagEntity {
     @Id
+    @ToString.Include
     private String label;
 
     private Category category;

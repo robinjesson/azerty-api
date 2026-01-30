@@ -2,13 +2,15 @@ package fr.robinjesson.mybudgetapi.entities;
 
 import fr.robinjesson.mybudgetapi.entities.enums.Category;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "tag")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TagEntity {
     @Id
     private String label;

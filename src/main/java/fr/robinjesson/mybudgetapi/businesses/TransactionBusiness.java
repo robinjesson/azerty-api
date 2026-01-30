@@ -3,11 +3,13 @@ package fr.robinjesson.mybudgetapi.businesses;
 import fr.robinjesson.mybudgetapi.entities.AccountEntity;
 import fr.robinjesson.mybudgetapi.entities.TagEntity;
 import fr.robinjesson.mybudgetapi.entities.TransactionEntity;
+import fr.robinjesson.mybudgetapi.entities.UserEntity;
 import fr.robinjesson.mybudgetapi.exception.ForbiddenException;
 import fr.robinjesson.mybudgetapi.exception.NotFoundException;
 import fr.robinjesson.mybudgetapi.repository.AccountRepository;
 import fr.robinjesson.mybudgetapi.repository.TagRepository;
 import fr.robinjesson.mybudgetapi.repository.TransactionRepository;
+import fr.robinjesson.mybudgetapi.repository.UserRepository;
 import fr.robinjesson.mybudgetapi.security.ConnectedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class TransactionBusiness {
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
     private final TagRepository tagRepository;
     private final ConnectedUser connectedUser;
 
@@ -50,11 +53,12 @@ public class TransactionBusiness {
 
     public List<TagEntity> resolveTagsFromLabels(final Set<String> tagLabels) {
         final List<TagEntity> userTags = tagRepository.findAllByOwnerUid(connectedUser.getUid());
+        final UserEntity owner = userRepository.findById(connectedUser.getUid()).orElseThrow(() -> new NotFoundException("User not found for UID " + connectedUser.getUid()));
         return tagLabels.stream()
                 .map(label -> userTags.stream()
                         .filter(tag -> tag.getLabel().equals(label))
                         .findFirst()
-                        .orElseThrow(() -> new NotFoundException("Tag not found with label " + label)))
+                        .orElse(tagRepository.save(TagEntity.builder().label(label).owner(owner).build())))
                 .toList();
     }
 }

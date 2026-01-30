@@ -4,7 +4,6 @@ import fr.robinjesson.mybudgetapi.api.request.LoginRequest;
 import fr.robinjesson.mybudgetapi.businesses.AuthBusiness;
 import fr.robinjesson.mybudgetapi.businesses.JwtBusiness;
 import fr.robinjesson.mybudgetapi.entities.UserEntity;
-import fr.robinjesson.mybudgetapi.mappers.UserMapper;
 import fr.robinjesson.mybudgetapi.security.Consts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthAdapter {
-    private final UserMapper userMapper;
     private final AuthBusiness authBusiness;
     private final JwtBusiness jwtBusiness;
 

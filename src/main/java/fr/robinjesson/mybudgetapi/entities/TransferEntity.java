@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Table(name = "transfer")
@@ -16,15 +15,15 @@ import java.util.UUID;
 public class TransferEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_source_account_uuid", nullable = false)
+    @JoinColumn(name = "fk_source_account_id", nullable = false)
     private AccountEntity sourceAccount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_destination_account_uuid", nullable = false)
+    @JoinColumn(name = "fk_destination_account_id", nullable = false)
     private AccountEntity destinationAccount;
 
     @Column(nullable = false)

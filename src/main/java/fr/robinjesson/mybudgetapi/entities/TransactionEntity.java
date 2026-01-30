@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.List;
 
 @Entity
 @Table(name = "transaction")
@@ -19,11 +19,11 @@ import java.util.UUID;
 public class TransactionEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_account_uuid", nullable = false)
+    @JoinColumn(name = "fk_account_id", nullable = false)
     private AccountEntity account;
 
     @Column(nullable = false)
@@ -33,12 +33,8 @@ public class TransactionEntity {
     @Column(nullable = false)
     private BigDecimal amount;
 
-    private String description;
-
     @Column(nullable = false)
     private LocalDate transactionDate;
-
-    private String category;
 
     @Column(nullable = false)
     private Boolean isPointed;
@@ -47,14 +43,22 @@ public class TransactionEntity {
     private Boolean isReconciled;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_recurring_payment_uuid")
+    @JoinColumn(name = "fk_recurring_payment_id")
     private RecurringPaymentEntity recurringPayment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_transfer_uuid")
+    @JoinColumn(name = "fk_transfer_id")
     private TransferEntity transfer;
 
     private LocalDate deferredDebitDate;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "transaction_tag",
+            joinColumns = @JoinColumn(name = "fk_transaction_id"),
+            inverseJoinColumns = @JoinColumn(name = "fk_tag_label")
+    )
+    private List<TagEntity> tags;
 
     @Embedded
     private Timestamp timestamp;

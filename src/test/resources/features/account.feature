@@ -41,7 +41,7 @@ Feature: Accounts
     name: new account
     startAmount: 12
     """
-    Then we receive a status OK_200
+    Then we receive a status CREATED_201
     And we receive:
     """yml
     name: new account

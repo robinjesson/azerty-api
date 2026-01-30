@@ -1,0 +1,14 @@
+{
+    "java.debug.settings.onBuildFailureProceed": true,
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "snyk.advanced.organization": "8ed61b5c-f9d8-4f70-8674-919017e3728a",
+    "snyk.advanced.autoSelectOrganization": true,
+    "java.compile.nullAnalysis.mode": "automatic",
+    "cucumber.glue": [
+        "src/test/java/fr/robinjesson/mybudgetapi/steps",
+        "com.decathlon.tzatziki.steps"
+    ],
+    "cucumber.features": [
+        "src/test/resources/features"
+    ],
+}

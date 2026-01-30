@@ -1,6 +1,7 @@
 package fr.robinjesson.mybudgetapi.businesses;
 
 import fr.robinjesson.mybudgetapi.entities.AccountEntity;
+import fr.robinjesson.mybudgetapi.exception.ForbiddenException;
 import fr.robinjesson.mybudgetapi.repository.AccountRepository;
 import fr.robinjesson.mybudgetapi.repository.UserRepository;
 import fr.robinjesson.mybudgetapi.security.ConnectedUser;
@@ -15,6 +16,13 @@ public class AccountBusiness {
     private final AccountRepository accountRepository;
     private final ConnectedUser connectedUser;
     private final UserRepository userRepository;
+
+    public AccountEntity findConcreteById(final Long accountId) {
+        final AccountEntity accountEntity = accountRepository.findConcreteById(accountId);
+        if(!accountEntity.getUser().getUid().equals(connectedUser.getUid()))
+            throw new ForbiddenException("Access denied to account " + accountId);
+        return accountRepository.findConcreteById(accountId);
+    }
 
     public List<AccountEntity> findUserAccounts() {
         return accountRepository.findByUserUid(connectedUser.getUid());

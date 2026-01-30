@@ -52,7 +52,7 @@ public class TransactionEntity {
 
     private LocalDate deferredDebitDate;
 
-    @OneToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "transaction_tag",
             joinColumns = @JoinColumn(name = "fk_transaction_id"),

@@ -37,6 +37,7 @@ public class TransactionBusiness {
     public TransactionEntity save(final TransactionEntity transactionEntity, final AccountEntity account) {
         if (!account.getUser().getUid().equals(connectedUser.getUid()))
             throw new ForbiddenException("Access denied to account " + account.getId());
+        transactionEntity.setAccount(account);
         return transactionRepository.save(transactionEntity);
     }
 

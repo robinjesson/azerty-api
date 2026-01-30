@@ -23,6 +23,10 @@ public class TransactionAdapter {
         final TransactionEntity transactionEntity = transactionMapper.mapToEntity(request);
         final var tags = transactionBusiness.resolveTagsFromLabels(request.getTagLabels());
         transactionEntity.setTags(tags);
+        transactionEntity.setIsPointed(false);
+        transactionEntity.setIsReconciled(false);
+        transactionEntity.setTransactionDate(java.time.LocalDate.now());
+        transactionEntity.setTransactionType(fr.robinjesson.mybudgetapi.entities.enums.TransactionTypeEnum.EXPENSE);
         final TransactionEntity savedTransaction = transactionBusiness.save(transactionEntity, accountBusiness.findConcreteById(accountid));
         return transactionMapper.mapToResponse(savedTransaction);
     }

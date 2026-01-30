@@ -246,3 +246,72 @@ Feature: Transaction
     []
     """
 
+  Scenario: An user cannot create a transaction with a null amount
+    Given that the AccountEntity entities will contain:
+    """yml
+    - name: compte 1
+      user.uid: robinj
+      startAmount: 100
+    """
+    When robinj post "/transactions?accountId=1":
+    """yml
+    transactionType: EXPENSE
+    tagLabels:
+      - alimentation
+    """
+    Then we receive a status BAD_REQUEST_400
+
+  Scenario: An user cannot create a transaction with a null transaction type
+    Given that the AccountEntity entities will contain:
+    """yml
+    - name: compte 1
+      user.uid: robinj
+      startAmount: 100
+    """
+    When robinj post "/transactions?accountId=1":
+    """yml
+    amount: 50.00
+    tagLabels:
+      - alimentation
+    """
+    Then we receive a status BAD_REQUEST_400
+
+  Scenario: An user cannot create a transaction with empty tags
+    Given that the AccountEntity entities will contain:
+    """yml
+    - name: compte 1
+      user.uid: robinj
+      startAmount: 100
+    """
+    When robinj post "/transactions?accountId=1":
+    """yml
+    amount: 50.00
+    transactionType: EXPENSE
+    tagLabels: []
+    """
+    Then we receive a status BAD_REQUEST_400
+
+  Scenario: An user cannot update a transaction with a null amount
+    Given that the AccountEntity entities will contain:
+    """yml
+    - name: compte 1
+      user.uid: robinj
+      startAmount: 100
+    """
+    And that the TransactionEntity entities will contain:
+    """yml
+    - account.id: 1
+      transactionType: EXPENSE
+      amount: 30.00
+      isPointed: false
+      isReconciled: false
+      transactionDate: "2026-01-01"
+    """
+    When robinj put "/transactions/1":
+    """yml
+    transactionType: INCOME
+    tagLabels:
+      - alimentation
+    """
+    Then we receive a status BAD_REQUEST_400
+

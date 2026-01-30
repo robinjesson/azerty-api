@@ -51,3 +51,12 @@ Feature: Tag
       category: PAYMENT_MEAN
       owner.uid: robinj
     """
+
+  Scenario: user cannot create a tag with a blank label
+    When robinj post "/tags":
+    """yml
+    label: ""
+    category: PAYMENT_MEAN
+    """
+    Then we receive a status BAD_REQUEST_400
+    

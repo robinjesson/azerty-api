@@ -18,7 +18,7 @@ public class AccountController {
     private final AccountAdapter accountAdapter;
 
     @GetMapping("/{id}")
-    public ResponseEntity<AccountResponse> findById(final Long id) {
+    public ResponseEntity<AccountResponse> findById(@PathVariable final Long id) {
         return ResponseEntity.ok(accountAdapter.findConcreteById(id));
     }
 

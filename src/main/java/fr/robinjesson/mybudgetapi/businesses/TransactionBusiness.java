@@ -43,7 +43,7 @@ public class TransactionBusiness {
 
     public List<TransactionEntity> findTransactionsByAccount(final Long accountId) {
         final AccountEntity account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new NotFoundException("Account not found with uuid " + accountId));
+                .orElseThrow(() -> new NotFoundException("Account not found with id " + accountId));
 
         if (!account.getUser().getUid().equals(connectedUser.getUid())) {
             throw new ForbiddenException("Access denied to account " + accountId);
@@ -53,13 +53,34 @@ public class TransactionBusiness {
     }
 
     public List<TagEntity> resolveTagsFromLabels(final Set<String> tagLabels) {
-        final List<TagEntity> userTags = tagRepository.findAllByOwnerUid(connectedUser.getUid());
-        final UserEntity owner = userRepository.findById(connectedUser.getUid()).orElseThrow(() -> new NotFoundException("User not found for UID " + connectedUser.getUid()));
+        final List<TagEntity> existingTags = tagRepository.findAllByOwnerUid(connectedUser.getUid());
+        final UserEntity owner = userRepository.findById(connectedUser.getUid())
+                .orElseThrow(() -> new NotFoundException("User not found for UID " + connectedUser.getUid()));
+
+        // Partition labels into existing and new
+        final Set<String> existingLabels = existingTags.stream()
+                .map(TagEntity::getLabel)
+                .collect(Collectors.toSet());
+        
+        final List<String> newLabels = tagLabels.stream()
+                .filter(label -> !existingLabels.contains(label))
+                .toList();
+
+        // Batch create new tags
+        final List<TagEntity> newTags = newLabels.isEmpty() ? List.of() :
+                tagRepository.saveAll(newLabels.stream()
+                        .map(label -> TagEntity.builder().label(label).owner(owner).build())
+                        .toList());
+
+        // Combine existing and newly created tags, preserving order from input
         return tagLabels.stream()
-                .map(label -> userTags.stream()
+                .map(label -> existingTags.stream()
                         .filter(tag -> tag.getLabel().equals(label))
                         .findFirst()
-                        .orElse(tagRepository.save(TagEntity.builder().label(label).owner(owner).build())))
+                        .orElseGet(() -> newTags.stream()
+                                .filter(tag -> tag.getLabel().equals(label))
+                                .findFirst()
+                                .orElseThrow(() -> new IllegalStateException("Tag not found: " + label))))
                 .toList();
     }
 }

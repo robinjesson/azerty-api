@@ -52,3 +52,18 @@ Feature: Accounts
     - name: new account
       user.uid: robinj
     """
+
+  Scenario: When a user create an account with a blank name, it fails
+    When robinj post "/accounts":
+    """yml
+    name: ""
+    startAmount: 12
+    """
+    Then we receive a status BAD_REQUEST_400
+
+  Scenario: When a user create an account with a null start amount, it fails
+    When robinj post "/accounts":
+    """yml
+    name: "new account"
+    """
+    Then we receive a status BAD_REQUEST_400

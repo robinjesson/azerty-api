@@ -9,6 +9,7 @@ import fr.robinjesson.mybudgetapi.entities.TransactionEntity;
 import fr.robinjesson.mybudgetapi.mappers.TransactionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,13 +32,14 @@ public class TransactionAdapter {
         return transactionMapper.mapToResponse(savedTransaction);
     }
 
+    @Transactional
     public TransactionResponse updateTransaction(final Long transactionId, final TransactionRequest request) {
         final TransactionEntity transaction = transactionBusiness.findConcreteById(transactionId);
         transactionMapper.mapToExistingEntity(transaction, request);
         final List<TagEntity> tags = transactionBusiness.resolveTagsFromLabels(request.getTagLabels());
         transaction.setTags(tags);
-        final TransactionEntity updatedTransaction = transactionBusiness.save(transaction, transaction.getAccount());
-        return transactionMapper.mapToResponse(updatedTransaction);
+        // No need to call save() - JPA will auto-update at transaction commit
+        return transactionMapper.mapToResponse(transaction);
     }
 
     public List<TransactionResponse> findTransactionsByAccount(final Long accountId) {

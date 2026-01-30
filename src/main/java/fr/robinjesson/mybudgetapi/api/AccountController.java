@@ -3,6 +3,7 @@ package fr.robinjesson.mybudgetapi.api;
 import fr.robinjesson.mybudgetapi.adapter.AccountAdapter;
 import fr.robinjesson.mybudgetapi.api.request.AccountCreationRequest;
 import fr.robinjesson.mybudgetapi.api.response.AccountResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<AccountResponse> createAccountForConnectedUser(@RequestBody final AccountCreationRequest accountCreationRequest) {
+    public ResponseEntity<AccountResponse> createAccountForConnectedUser(@RequestBody @Valid final AccountCreationRequest accountCreationRequest) {
         return new ResponseEntity<>(accountAdapter.createAccountForConnectedUser(accountCreationRequest), HttpStatus.CREATED);
-
     }
 }

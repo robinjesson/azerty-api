@@ -21,7 +21,7 @@ public class AccountBusiness {
         final AccountEntity accountEntity = accountRepository.findConcreteById(accountId);
         if(!accountEntity.getUser().getUid().equals(connectedUser.getUid()))
             throw new ForbiddenException("Access denied to account " + accountId);
-        return accountRepository.findConcreteById(accountId);
+        return accountEntity;
     }
 
     public List<AccountEntity> findUserAccounts() {

@@ -8,8 +8,16 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
+
 @ControllerAdvice
 public class ExceptionHandlingController {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handle(final MethodArgumentNotValidException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler({BadRequestException.class})
     public String handle(final BadRequestException badRequestException) {

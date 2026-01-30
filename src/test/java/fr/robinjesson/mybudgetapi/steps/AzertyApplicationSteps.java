@@ -26,7 +26,6 @@ public class AzertyApplicationSteps {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
             postgres.start();
 
-            System.out.println(postgres.getUsername() + "/" + postgres.getPassword() + "@" + postgres.getJdbcUrl());
             TestPropertyValues.of(
                     "spring.datasource.url=" + postgres.getJdbcUrl(),
                     "spring.datasource.username=" + postgres.getUsername(),

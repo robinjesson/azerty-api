@@ -1,5 +1,6 @@
 package fr.robinjesson.mybudgetapi.api.request;
 
+import fr.robinjesson.mybudgetapi.entities.enums.TransactionTypeEnum;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -13,6 +14,9 @@ import java.util.Set;
 public class TransactionRequest {
     @NotNull
     private BigDecimal amount;
+
+    @NotNull
+    private TransactionTypeEnum transactionType;
 
     @NotEmpty
     private Set<String> tagLabels;

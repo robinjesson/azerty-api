@@ -34,6 +34,7 @@ Feature: Transaction
     When robinj post "/transactions?accountId=1":
     """yml
     amount: 50.00
+    transactionType: EXPENSE
     tagLabels:
       - alimentation
       - transport
@@ -61,6 +62,7 @@ Feature: Transaction
     When user2 post "/transactions?accountId=1":
     """yml
     amount: 50.00
+    transactionType: EXPENSE
     tagLabels:
       - autre_tag
     """
@@ -71,6 +73,7 @@ Feature: Transaction
     When robinj post "/transactions?accountId=999999":
     """yml
     amount: 50.00
+    transactionType: INCOME
     tagLabels:
       - alimentation
     """
@@ -96,6 +99,7 @@ Feature: Transaction
     When robinj put "/transactions/1":
     """yml
     amount: 75.00
+    transactionType: INCOME
     tagLabels:
       - alimentation
     """
@@ -122,6 +126,7 @@ Feature: Transaction
     When user2 put "/transactions/1":
     """yml
     amount: 75.00
+    transactionType: EXPENSE
     tagLabels:
       - autre_tag
     """
@@ -132,6 +137,7 @@ Feature: Transaction
     When robinj put "/transactions/999999":
     """yml
     amount: 75.00
+    transactionType: TRANSFER_DEBIT
     tagLabels:
       - alimentation
     """

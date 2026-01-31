@@ -5,6 +5,7 @@ import fr.robinjesson.mybudgetapi.adapter.UserAdapter;
 import fr.robinjesson.mybudgetapi.api.request.LoginRequest;
 import fr.robinjesson.mybudgetapi.api.request.RegisterUserRequest;
 import fr.robinjesson.mybudgetapi.api.response.UserResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +23,13 @@ public class AuthController {
     private final AuthAdapter authAdapter;
 
     @PostMapping("/signup")
+    @Operation(summary = "Register a new user")
     public ResponseEntity<UserResponse> signup(@RequestBody final RegisterUserRequest registerUserRequest) {
         return ResponseEntity.ok(userAdapter.signup(registerUserRequest));
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Authenticate a user and return a JWT token in an HTTP-only cookie")
     public ResponseEntity<Void> login(@RequestBody final LoginRequest loginRequest) {
         return ResponseEntity.noContent()
                 .header(HttpHeaders.SET_COOKIE, authAdapter.authenticate(loginRequest).toString())

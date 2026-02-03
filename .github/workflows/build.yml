@@ -74,5 +74,6 @@ jobs:
           push: true
           tags: |
             ghcr.io/robinjesson/my-budget-api:${{ env.PROJECT_VERSION }}
+            ghcr.io/robinjesson/my-budget-api:${{ github.run_number }}
             ${{ github.ref == 'refs/heads/develop' && 'ghcr.io/robinjesson/my-budget-api:latest' || '' }}
           platforms: linux/amd64,linux/arm64

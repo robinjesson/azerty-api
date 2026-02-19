@@ -1,6 +1,6 @@
 # 🏦 MyBank Projection API
 
-[![Java](https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=openjdk)](https://openjdk.org/)
+[![Java](https://img.shields.io/badge/Java-25-orange?style=for-the-badge&logo=openjdk)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-brightgreen?style=for-the-badge&logo=springboot)](https://spring.io/projects/spring-boot)
 [![Kubernetes](https://img.shields.io/badge/K3s-Raspberry_Pi-blue?style=for-the-badge&logo=kubernetes)](https://k3s.io/)
 [![PostgreSQL](https://img.shields.io/badge/Database-Aiven_Cloud-blue?style=for-the-badge&logo=postgresql)](https://aiven.io/)
@@ -19,7 +19,7 @@ Le projet repose sur une infrastructure hybride visant la haute disponibilité e
 
 
 ## 🏗 Stack Technique
-* **Backend:** Java 21 (Records, Virtual Threads), Spring Boot 3.4.
+* **Backend:** Java 25 (Records, Virtual Threads), Spring Boot 3.4.
 * **Data:** Spring Data JPA, Hibernate, PostgreSQL.
 * **Streaming:** Spring Kafka / Redpanda.
 * **Sécurité:** Spring Security, JWT (HttpOnly Cookies), SSL Encryption.

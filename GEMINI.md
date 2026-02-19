@@ -2,12 +2,12 @@
 
 ## Project Overview
 
-**MyBudget API** is a personal budget management REST API built with **Spring Boot 3.5** and **Java 21**.
+**MyBudget API** is a personal budget management REST API built with **Spring Boot 3.5** and **Java 25**.
 
 ### Tech Stack
 
 - **Framework**: Spring Boot 3.5.9
-- **Language**: Java 21
+- **Language**: Java 25
 - **Database**: PostgreSQL with Spring Data JPA. Service 'DB' in Docker Compose for local development.
 - **Security**: Spring Security with JWT (jjwt 0.13.0)
 - **Mapping**: MapStruct 1.6.0

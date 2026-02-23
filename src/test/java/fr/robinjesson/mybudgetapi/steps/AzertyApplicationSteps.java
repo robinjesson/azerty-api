@@ -8,7 +8,7 @@ import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -18,8 +18,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 public class AzertyApplicationSteps {
 	// This class serves as the Spring Boot Test context configuration for Cucumber scenarios
 
-    private static final PostgreSQLContainer<?> postgres =
-            new PostgreSQLContainer<>("postgres:17-alpine").withTmpFs(Map.of("/var/lib/postgresql/data", "rw"));
+    private static final PostgreSQLContainer postgres =
+            new PostgreSQLContainer("postgres:17-alpine").withTmpFs(Map.of("/var/lib/postgresql/data", "rw"));
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 

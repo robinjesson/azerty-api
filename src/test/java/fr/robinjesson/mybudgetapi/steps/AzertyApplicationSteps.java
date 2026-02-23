@@ -2,7 +2,7 @@ package fr.robinjesson.mybudgetapi.steps;
 
 import fr.robinjesson.mybudgetapi.MyBudgetApplication;
 import io.cucumber.spring.CucumberContextConfiguration;
-import org.apache.groovy.util.Maps;
+import java.util.Map;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
@@ -19,7 +19,7 @@ public class AzertyApplicationSteps {
 	// This class serves as the Spring Boot Test context configuration for Cucumber scenarios
 
     private static final PostgreSQLContainer<?> postgres =
-            new PostgreSQLContainer<>("postgres:17-alpine").withTmpFs(Maps.of("/var/lib/postgresql/data", "rw"));
+            new PostgreSQLContainer<>("postgres:17-alpine").withTmpFs(Map.of("/var/lib/postgresql/data", "rw"));
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 

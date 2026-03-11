@@ -67,7 +67,7 @@ jobs:
 
       - name: Build and push Docker image
         if: github.event_name == 'push' # Only push on push events, not pull requests
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile

@@ -5,7 +5,6 @@ import fr.robinjesson.mybudgetapi.api.response.UserResponse;
 import fr.robinjesson.mybudgetapi.businesses.UserBusiness;
 import fr.robinjesson.mybudgetapi.entities.UserEntity;
 import fr.robinjesson.mybudgetapi.mappers.UserMapper;
-import fr.robinjesson.mybudgetapi.security.ConnectedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +15,9 @@ import java.time.LocalDateTime;
 public class UserAdapter {
     private final UserMapper userMapper;
     private final UserBusiness userBusiness;
-    private final ConnectedUser connectedUser;
 
     public UserResponse getMe() {
-        return new UserResponse(connectedUser.getUid(), connectedUser.getEmail());
+        return userMapper.mapToResponse(userBusiness.findConnectedUser());
     }
 
     public UserResponse signup(final RegisterUserRequest registerUserRequest) {

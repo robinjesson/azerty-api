@@ -2,7 +2,9 @@ package fr.robinjesson.mybudgetapi.businesses;
 
 import fr.robinjesson.mybudgetapi.entities.UserEntity;
 import fr.robinjesson.mybudgetapi.exception.BadRequestException;
+import fr.robinjesson.mybudgetapi.exception.NotFoundException;
 import fr.robinjesson.mybudgetapi.repository.UserRepository;
+import fr.robinjesson.mybudgetapi.security.ConnectedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,12 @@ import java.util.Optional;
 public class UserBusiness {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ConnectedUser connectedUser;
+
+    public UserEntity findConnectedUser() {
+        return userRepository.findById(connectedUser.getUid())
+                .orElseThrow(() -> new NotFoundException("User not found for UID " + connectedUser.getUid()));
+    }
 
     public UserEntity create(final UserEntity user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));

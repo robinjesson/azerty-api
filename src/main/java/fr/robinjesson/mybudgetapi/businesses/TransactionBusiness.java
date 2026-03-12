@@ -42,6 +42,10 @@ public class TransactionBusiness {
     }
 
     public List<TransactionEntity> findTransactionsByAccount(final Long accountId) {
+        if (accountId == null) {
+            return transactionRepository.findByAccountUserUid(connectedUser.getUid());
+        }
+
         final AccountEntity account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundException("Account not found with id " + accountId));
 

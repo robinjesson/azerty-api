@@ -19,9 +19,10 @@ public class UserController {
     @GetMapping("/me")
     @Operation(summary = "Get the current authenticated user's information")
     public ResponseEntity<UserResponse> getUserById() {
-        final UserResponse userResponse = new UserResponse();
-        userResponse.setUid(connectedUser.getUid());
-        userResponse.setEmail(connectedUser.getEmail());
+        final UserResponse userResponse = new UserResponse(
+                connectedUser.getUid(),
+                connectedUser.getEmail()
+        );
         return ResponseEntity.ok(userResponse);
     }
 

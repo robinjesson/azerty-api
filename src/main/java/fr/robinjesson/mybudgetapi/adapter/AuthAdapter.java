@@ -23,7 +23,7 @@ public class AuthAdapter {
     private boolean cookieSecure;
 
     public ResponseCookie authenticate(final LoginRequest loginRequest) {
-        final UserEntity user = authBusiness.authenticate(loginRequest.getUid(), loginRequest.getPassword());
+        final UserEntity user = authBusiness.authenticate(loginRequest.uid(), loginRequest.password());
         final String token = jwtBusiness.generateToken(user);
         return ResponseCookie.from(Consts.COOKIE_NAME, token)
                 .httpOnly(true)

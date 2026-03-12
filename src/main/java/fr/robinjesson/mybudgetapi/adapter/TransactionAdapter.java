@@ -23,7 +23,7 @@ public class TransactionAdapter {
 
     public TransactionResponse createTransaction(final Long accountId, final TransactionRequest request) {
         final TransactionEntity transactionEntity = transactionMapper.mapToEntity(request);
-        final List<TagEntity> tags = transactionBusiness.resolveTagsFromLabels(request.getTagLabels());
+        final List<TagEntity> tags = transactionBusiness.resolveTagsFromLabels(request.tagLabels());
         transactionEntity.setTags(tags);
         transactionEntity.setIsPointed(false);
         transactionEntity.setIsReconciled(false);
@@ -36,7 +36,7 @@ public class TransactionAdapter {
     public TransactionResponse updateTransaction(final Long transactionId, final TransactionRequest request) {
         final TransactionEntity transaction = transactionBusiness.findConcreteById(transactionId);
         transactionMapper.mapToExistingEntity(transaction, request);
-        final List<TagEntity> tags = transactionBusiness.resolveTagsFromLabels(request.getTagLabels());
+        final List<TagEntity> tags = transactionBusiness.resolveTagsFromLabels(request.tagLabels());
         transaction.setTags(tags);
         // No need to call save() - JPA will auto-update at transaction commit
         return transactionMapper.mapToResponse(transaction);

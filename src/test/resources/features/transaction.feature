@@ -246,6 +246,39 @@ Feature: Transaction
     []
     """
 
+  Scenario: Un utilisateur peut récupérer toutes ses transactions sans filtrer par compte
+    Given that the AccountEntity entities will contain:
+    """yml
+    - name: compte 1
+      user.uid: robinj
+      startAmount: 100
+    - name: compte 2
+      user.uid: robinj
+      startAmount: 200
+    """
+    And that the TransactionEntity entities will contain:
+    """yml
+    - account.id: 1
+      transactionType: EXPENSE
+      amount: 20.00
+      transactionDate: 2026-01-15
+      isPointed: false
+      isReconciled: false
+    - account.id: 2
+      transactionType: INCOME
+      amount: 100.00
+      transactionDate: 2026-01-16
+      isPointed: true
+      isReconciled: false
+    """
+    When robinj get "/transactions"
+    Then we receive a status OK_200
+    And we receive only:
+    """yml
+    - amount: 20.00
+    - amount: 100.00
+    """
+
   Scenario: An user cannot create a transaction with a null amount
     Given that the AccountEntity entities will contain:
     """yml

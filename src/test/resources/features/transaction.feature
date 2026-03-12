@@ -31,7 +31,7 @@ Feature: Transaction
       user.uid: robinj
       startAmount: 100
     """
-    When robinj post "/transactions?accountId=1":
+    When robinj post "/v0/accounts/1/transactions":
     """yml
     amount: 50.00
     transactionType: EXPENSE
@@ -67,7 +67,7 @@ Feature: Transaction
       startAmount: 100
     """
     Given a user named user2
-    When user2 post "/transactions?accountId=1":
+    When user2 post "/v0/accounts/1/transactions":
     """yml
     amount: 50.00
     transactionType: EXPENSE
@@ -78,7 +78,7 @@ Feature: Transaction
 
 
   Scenario: Un utilisateur ne peut pas créer une transaction sur un compte inexistant
-    When robinj post "/transactions?accountId=999999":
+    When robinj post "/v0/accounts/999999/transactions":
     """yml
     amount: 50.00
     transactionType: INCOME
@@ -104,7 +104,7 @@ Feature: Transaction
       isPointed: false
       isReconciled: false
     """
-    When robinj put "/transactions/1":
+    When robinj put "/v0/transactions/1":
     """yml
     amount: 75.00
     transactionType: INCOME
@@ -141,7 +141,7 @@ Feature: Transaction
       isReconciled: false
     """
     Given a user named user2
-    When user2 put "/transactions/1":
+    When user2 put "/v0/transactions/1":
     """yml
     amount: 75.00
     transactionType: EXPENSE
@@ -152,7 +152,7 @@ Feature: Transaction
 
 
   Scenario: Un utilisateur ne peut pas modifier une transaction inexistante
-    When robinj put "/transactions/999999":
+    When robinj put "/v0/transactions/999999":
     """yml
     amount: 75.00
     transactionType: TRANSFER_DEBIT
@@ -193,7 +193,7 @@ Feature: Transaction
       isPointed: false
       isReconciled: false
     """
-    When robinj get "/transactions?accountId=1"
+    When robinj get "/v0/accounts/1/transactions"
     Then we receive a status OK_200
     And we receive only:
     """yml
@@ -223,12 +223,12 @@ Feature: Transaction
       isReconciled: false
     """
     Given a user named user2
-    When user2 get "/transactions?accountId=1"
+    When user2 get "/v0/accounts/1/transactions"
     Then we receive a status FORBIDDEN_403
 
 
   Scenario: Un utilisateur ne peut pas récupérer les transactions d'un compte inexistant
-    When robinj get "/transactions?accountId=999999"
+    When robinj get "/v0/accounts/999999/transactions"
     Then we receive a status NOT_FOUND_404
 
 
@@ -239,7 +239,7 @@ Feature: Transaction
       user.uid: robinj
       startAmount: 200
     """
-    When robinj get "/transactions?accountId=1"
+    When robinj get "/v0/accounts/1/transactions"
     Then we receive a status OK_200
     And we receive:
     """yml
@@ -271,7 +271,7 @@ Feature: Transaction
       isPointed: true
       isReconciled: false
     """
-    When robinj get "/transactions"
+    When robinj get "/v0/transactions"
     Then we receive a status OK_200
     And we receive only:
     """yml
@@ -286,7 +286,7 @@ Feature: Transaction
       user.uid: robinj
       startAmount: 100
     """
-    When robinj post "/transactions?accountId=1":
+    When robinj post "/v0/accounts/1/transactions":
     """yml
     transactionType: EXPENSE
     tagLabels:
@@ -301,7 +301,7 @@ Feature: Transaction
       user.uid: robinj
       startAmount: 100
     """
-    When robinj post "/transactions?accountId=1":
+    When robinj post "/v0/accounts/1/transactions":
     """yml
     amount: 50.00
     tagLabels:
@@ -316,7 +316,7 @@ Feature: Transaction
       user.uid: robinj
       startAmount: 100
     """
-    When robinj post "/transactions?accountId=1":
+    When robinj post "/v0/accounts/1/transactions":
     """yml
     amount: 50.00
     transactionType: EXPENSE
@@ -340,7 +340,7 @@ Feature: Transaction
       isReconciled: false
       transactionDate: "2026-01-01"
     """
-    When robinj put "/transactions/1":
+    When robinj put "/v0/transactions/1":
     """yml
     transactionType: INCOME
     tagLabels:

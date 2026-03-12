@@ -26,7 +26,7 @@ Feature: Accounts
 
 
   Scenario: When a user call its accounts, he get only his ones
-    When robinj get "/accounts"
+    When robinj get "/v0/accounts"
     Then we receive a status OK_200
     And we receive only:
     """yml
@@ -36,7 +36,7 @@ Feature: Accounts
 
 
   Scenario: When a user create an account, then it is created for him
-    When robinj post "/accounts":
+    When robinj post "/v0/accounts":
     """yml
     name: new account
     startAmount: 12
@@ -54,7 +54,7 @@ Feature: Accounts
     """
 
   Scenario: When a user create an account with a blank name, it fails
-    When robinj post "/accounts":
+    When robinj post "/v0/accounts":
     """yml
     name: ""
     startAmount: 12
@@ -62,7 +62,7 @@ Feature: Accounts
     Then we receive a status BAD_REQUEST_400
 
   Scenario: When a user create an account with a null start amount, it fails
-    When robinj post "/accounts":
+    When robinj post "/v0/accounts":
     """yml
     name: "new account"
     """

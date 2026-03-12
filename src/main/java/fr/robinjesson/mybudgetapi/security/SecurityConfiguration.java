@@ -25,7 +25,7 @@ public class SecurityConfiguration {
     private final ConnectedUserFilter connectedUserFilter;
 
     private static final String[] whitelist = {
-            "/auth/**",
+            "/v0/auth/**",
             "/actuator/**",
             "/swagger-ui.html",
             "/swagger-ui/**",

@@ -8,7 +8,7 @@ Feature: Get connected user information
       email: robinj@email.fr
       password: x
     """
-    When robinj get "/users/me"
+    When robinj get "/v0/users/me"
     Then we receive a status OK_200
     And we receive:
     """yml
@@ -17,6 +17,6 @@ Feature: Get connected user information
 
   Scenario: When user in jwt is not found, then the response is not found
     Given a user named unknown
-    When unknown get "/users/me"
+    When unknown get "/v0/users/me"
     Then we receive a status NOT_FOUND_404
 

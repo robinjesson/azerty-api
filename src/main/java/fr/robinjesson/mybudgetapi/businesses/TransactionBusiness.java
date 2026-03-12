@@ -41,11 +41,11 @@ public class TransactionBusiness {
         return transactionRepository.save(transactionEntity);
     }
 
-    public List<TransactionEntity> findTransactionsByAccount(final Long accountId) {
-        if (accountId == null) {
-            return transactionRepository.findByAccountUserUid(connectedUser.getUid());
-        }
+    public List<TransactionEntity> findAllTransactionsForUser() {
+        return transactionRepository.findByAccountUserUid(connectedUser.getUid());
+    }
 
+    public List<TransactionEntity> findTransactionsByAccount(final Long accountId) {
         final AccountEntity account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundException("Account not found with id " + accountId));
 

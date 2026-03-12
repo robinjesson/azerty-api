@@ -1,13 +1,13 @@
 Feature: Login feature
 
   Scenario: Signup
-    When we post "/auth/signup":
+    When we post "/v0/auth/signup":
     """yml
     uid: userTest
     email: user@test.fr
     password: fakePwd
     """
-    Then we receive a status OK_200
+    Then we receive a status CREATED_201
     And the UserEntity entities contain:
     """yml
     uid: userTest
@@ -18,13 +18,13 @@ Feature: Login feature
     """
 
   Scenario: Signup and can login with good password
-    When we post "/auth/signup":
+    When we post "/v0/auth/signup":
     """yml
     uid: userTest
     email: user@test.fr
     password: fakePwd
     """
-    And we post "/auth/login":
+    And we post "/v0/auth/login":
     """yml
     uid: userTest
     password: fakePwd
@@ -37,13 +37,13 @@ Feature: Login feature
     """
 
   Scenario: Signup and can't login with wrong password
-    When we post "/auth/signup":
+    When we post "/v0/auth/signup":
     """yml
     uid: userTest
     email: user@test.fr
     password: fakePwd
     """
-    And we post "/auth/login":
+    And we post "/v0/auth/login":
     """yml
     uid: userTest
     password: wrongPwd
@@ -51,14 +51,14 @@ Feature: Login feature
     Then we receive a status FORBIDDEN_403
 
   Scenario: Can't create twice the same user
-    When we post "/auth/signup":
+    When we post "/v0/auth/signup":
     """yml
     uid: userTest
     email: user@test.fr
     password: fakePwd
     """
-    Then we receive a status OK_200
-    And we post "/auth/signup":
+    Then we receive a status CREATED_201
+    And we post "/v0/auth/signup":
     """yml
     uid: userTest
     email: user@test.fr

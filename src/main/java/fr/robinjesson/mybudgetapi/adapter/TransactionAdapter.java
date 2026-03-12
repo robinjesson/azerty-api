@@ -42,9 +42,12 @@ public class TransactionAdapter {
         return transactionMapper.mapToResponse(transaction);
     }
 
+    public List<TransactionResponse> findAllTransactions() {
+        return transactionMapper.mapToResponse(transactionBusiness.findAllTransactionsForUser());
+    }
+
     public List<TransactionResponse> findTransactionsByAccount(final Long accountId) {
-        final List<TransactionEntity> transactions = transactionBusiness.findTransactionsByAccount(accountId);
-        return transactionMapper.mapToResponse(transactions);
+        return transactionMapper.mapToResponse(transactionBusiness.findTransactionsByAccount(accountId));
     }
 }
 

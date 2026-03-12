@@ -24,7 +24,7 @@ Feature: Tag
     """
 
   Scenario: user can retrieve only their own tags
-    When robinj get "/tags"
+    When robinj get "/v0/tags"
     Then we receive a status OK_200
     And we receive only:
     """yml
@@ -34,7 +34,7 @@ Feature: Tag
     """
 
   Scenario: user can create their own tag
-    When robinj post "/tags":
+    When robinj post "/v0/tags":
     """yml
     label: carrefour
     category: PAYMENT_MEAN
@@ -53,10 +53,9 @@ Feature: Tag
     """
 
   Scenario: user cannot create a tag with a blank label
-    When robinj post "/tags":
+    When robinj post "/v0/tags":
     """yml
     label: ""
     category: PAYMENT_MEAN
     """
     Then we receive a status BAD_REQUEST_400
-    

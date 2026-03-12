@@ -31,8 +31,8 @@ public class TransactionController {
     }
 
     @GetMapping
-    @Operation(summary = "Get all transactions for an account")
-    public ResponseEntity<List<TransactionResponse>> findTransactionsByAccount(@RequestParam final Long accountId) {
+    @Operation(summary = "Get transactions, optionally filtered by account")
+    public ResponseEntity<List<TransactionResponse>> findTransactionsByAccount(@RequestParam(required = false) final Long accountId) {
         return ResponseEntity.ok(transactionAdapter.findTransactionsByAccount(accountId));
     }
 }

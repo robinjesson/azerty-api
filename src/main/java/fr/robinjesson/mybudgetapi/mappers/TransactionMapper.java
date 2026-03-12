@@ -8,7 +8,7 @@ import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
-@Mapper(config = MapperConfiguration.class)
+@Mapper(config = MapperConfiguration.class, uses = AccountMapper.class)
 public interface TransactionMapper {
     TransactionEntity mapToEntity(TransactionRequest source);
 

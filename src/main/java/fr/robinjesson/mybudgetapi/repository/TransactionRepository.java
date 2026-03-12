@@ -23,4 +23,7 @@ public interface TransactionRepository extends FineRepository<TransactionEntity,
     @Query("SELECT DISTINCT t FROM TransactionEntity t LEFT JOIN FETCH t.tags WHERE t.account.id = :accountId")
     List<TransactionEntity> findByAccountId(@Param("accountId") Long accountId);
 
+    @Query("SELECT DISTINCT t FROM TransactionEntity t LEFT JOIN FETCH t.tags WHERE t.account.user.uid = :uid")
+    List<TransactionEntity> findByAccountUserUid(@Param("uid") String uid);
+
 }

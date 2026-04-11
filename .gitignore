@@ -36,3 +36,5 @@ target/
 
 .gemini/
 gha-creds-*.json
+
+postgres_data/

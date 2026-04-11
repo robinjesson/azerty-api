@@ -9,7 +9,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -18,10 +25,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Integration test to verify the complete SSE flow:
- * 1. Client opens SSE connection (GET /simu/open)
- * 2. Client sends a message (POST /simu/send)
- * 3. Server schedules async notification (delay 2 seconds)
- * 4. Notification is sent via SSE stream
+ * 1. Client opens SSE connection (GET /simu/open?userId=X) - connection stays open
+ * 2. Client sends multiple messages (POST /simu/send)
+ * 3. Server schedules async notifications (delay 2 seconds each)
+ * 4. Notifications arrive via SSE stream to the open connection
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(initializers = SimulationControllerIntegrationTest.Initializer.class)
@@ -82,46 +89,104 @@ class SimulationControllerIntegrationTest {
     }
 
     @Test
-    void testCompleteSSEFlow() throws Exception {
+    void testMultipleSendsWithSSENotificationFlow() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         
-        String userId = "integration_user";
+        String userId = "sse_flow_test";
+        List<String> capturedNotifications = new ArrayList<>();
+        CountDownLatch allNotificationsReceived = new CountDownLatch(3);
 
-        // Step 1: Open SSE connection
-        Thread sseConnection = new Thread(() -> {
+        // Step 1: Open SSE connection in background thread and listen for events
+        Thread sseListenerThread = new Thread(() -> {
             try {
-                mockMvc.perform(get("/simu/open?userId=" + userId)
+                var mvcResult = mockMvc.perform(get("/simu/open?userId=" + userId)
                         .header("Accept", "text/event-stream"))
-                        .andExpect(status().isOk());
+                        .andExpect(status().isOk())
+                        .andReturn();
+                
+                // Poll SSE response for arriving events
+                // Each message has 2 second delay, so we need to wait longer
+                // Message 1: ~2s, Message 2: ~2.1s, Message 3: ~2.2s
+                // + buffer for capture = ~3-4 seconds minimum
+                for (int attempt = 0; attempt < 150; attempt++) { // 150 * 100ms = 15 seconds
+                    if (capturedNotifications.size() >= 3) {
+                        // All notifications captured, stop early
+                        break;
+                    }
+                    
+                    byte[] content = mvcResult.getResponse().getContentAsByteArray();
+                    String sseData = new String(content, StandardCharsets.UTF_8);
+                    
+                    if (!sseData.isEmpty()) {
+                        // Extract SSE data: events
+                        Pattern dataPattern = Pattern.compile("data:([^\n]*)");
+                        Matcher matcher = dataPattern.matcher(sseData);
+                        
+                        while (matcher.find()) {
+                            String event = matcher.group(1).trim();
+                            if (!event.isEmpty() && !capturedNotifications.contains(event)) {
+                                capturedNotifications.add(event);
+                                allNotificationsReceived.countDown();
+                            }
+                        }
+                    }
+                    
+                    Thread.sleep(100);
+                }
             } catch (Exception e) {
-                // SSE connection stays open
+                e.printStackTrace();
             }
         });
-        sseConnection.start();
+        sseListenerThread.start();
 
-        // Give SSE time to connect
+        // Give SSE connection time to establish
         Thread.sleep(500);
 
-        // Step 2: Send message to trigger async notification (scheduled for 2 seconds)
-        var sendResult = mockMvc.perform(post("/simu/send")
-                .contentType("application/json")
-                .content("""
-                        {
-                            "userId": "%s",
-                            "content": "Will trigger notification after 2 seconds"
-                        }
-                        """.formatted(userId)))
-                .andExpect(status().isAccepted())
-                .andReturn();
+        // Step 2: Send 3 messages via POST /simu/send
+        int messagesSent = 0;
+        for (int i = 1; i <= 3; i++) {
+            var sendResult = mockMvc.perform(post("/simu/send")
+                    .contentType("application/json")
+                    .content("""
+                            {
+                                "userId": "%s",
+                                "content": "Test message %d"
+                            }
+                            """.formatted(userId, i)))
+                    .andExpect(status().isAccepted())
+                    .andReturn();
 
-        String sendResponse = sendResult.getResponse().getContentAsString();
-        assertThat(sendResponse).contains("PENDING");
+            String responseBody = sendResult.getResponse().getContentAsString();
+            assertThat(responseBody).contains("PENDING");
+            
+            // Extract and verify msgId format
+            Pattern msgIdPattern = Pattern.compile("\"msgId\":\"([^\"]+)\"");
+            Matcher matcher = msgIdPattern.matcher(responseBody);
+            assertThat(matcher.find()).isTrue();
+            
+            messagesSent++;
+            Thread.sleep(100);
+        }
+
+        // Step 3: Verify all messages were sent
+        assertThat(messagesSent).isEqualTo(3);
         
-        // Step 3: Wait for async notification (2 seconds delay + buffer)
-        // In a real client, this would be received on the SSE stream
-        Thread.sleep(3000);
+        // Step 4: Wait for all 3 notifications to be captured
+        // Timeout: 15 seconds (3 messages * 2s delay + 9s buffer for polling)
+        boolean notificationsReceived = allNotificationsReceived.await(15, TimeUnit.SECONDS);
+        assertThat(notificationsReceived)
+                .as("Should receive signal for all 3 notifications before timeout")
+                .isTrue();
         
-        // Verify flow completed successfully
-        assertThat(sendResponse).isNotEmpty();
+        // Ensure listener thread completes
+        sseListenerThread.join(2000);
+        
+        // Step 5: Verify that we received exactly 3 notifications via SSE stream
+        assertThat(capturedNotifications)
+                .as("Should receive exactly 3 SSE notifications (one per message sent)")
+                .hasSize(3);
     }
 }
+
+
+

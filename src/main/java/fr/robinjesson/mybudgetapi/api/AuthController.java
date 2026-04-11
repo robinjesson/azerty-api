@@ -35,4 +35,12 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE, authAdapter.authenticate(loginRequest).toString())
                 .build();
     }
+
+    @PostMapping("/logout")
+    @Operation(summary = "Logout a user by removing the JWT token from HTTP-only cookie")
+    public ResponseEntity<Void> logout() {
+        return ResponseEntity.noContent()
+                .header(HttpHeaders.SET_COOKIE, authAdapter.logout().toString())
+                .build();
+    }
 }

@@ -32,4 +32,13 @@ public class AuthAdapter {
                 .maxAge(jwtExpiration / 1000)
                 .build();
     }
+
+    public ResponseCookie logout() {
+        return ResponseCookie.from(Consts.COOKIE_NAME, "")
+                .httpOnly(true)
+                .path("/")
+                .secure(cookieSecure)
+                .maxAge(0)
+                .build();
+    }
 }

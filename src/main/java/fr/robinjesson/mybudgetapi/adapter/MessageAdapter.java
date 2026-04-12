@@ -14,6 +14,7 @@ public class MessageAdapter {
     private final MessageBusiness messageBusiness;
     private final MessageMapper messageMapper;
 
+
     public List<MessageResponse> findMessagesByConversationId(final Long conversationId) {
         return messageMapper.mapToResponse(messageBusiness.findMessagesByConversationId(conversationId));
     }

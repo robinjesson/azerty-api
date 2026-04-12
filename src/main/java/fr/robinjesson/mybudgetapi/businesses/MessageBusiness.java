@@ -21,4 +21,11 @@ public class MessageBusiness {
         }
         return messageRepository.findByConversationId(conversationId);
     }
+
+    public MessageEntity createMessage(final MessageEntity message) {
+        if (!conversationRepository.existsById(message.getConversation().getId())) {
+            throw new NotFoundException("Conversation not found");
+        }
+        return messageRepository.save(message);
+    }
 }

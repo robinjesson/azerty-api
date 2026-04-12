@@ -1,41 +1,44 @@
 package fr.robinjesson.mybudgetapi.businesses;
 
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 
-import java.io.IOException;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class SseBusiness {
 
-    private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
+    // Un seul bus pour tout le monde (Multicast)
+    // On utilise directBestEffort() pour ne pas bloquer sur backpressure
+    private final Sinks.Many<ServerSentEvent<?>> globalSink = Sinks.many()
+            .multicast()
+            .directBestEffort();
 
-    public SseEmitter createConnection(String userId) {
-        // Timeout de 2 minutes (ajustable selon ton besoin)
-        SseEmitter emitter = new SseEmitter(120_000L);
-
-        emitter.onCompletion(() -> emitters.remove(userId));
-        emitter.onTimeout(() -> emitters.remove(userId));
-        emitter.onError((e) -> emitters.remove(userId));
-
-        emitters.put(userId, emitter);
-        return emitter;
+    public Flux<ServerSentEvent<?>> createConnectionFlux(String chatId) {
+        return globalSink.asFlux()
+                // On ne laisse passer que les messages destinés à cet utilisateur
+                .filter(event -> event.comment() != null && event.comment().equals(chatId))
+                // On envoie un petit message de ping pour valider la connexion
+                .startWith(ServerSentEvent.builder().comment(chatId).event("connected").data("OK").build());
     }
 
-    public void sendNotification(String userId, String eventName, Object data) {
-        SseEmitter emitter = emitters.get(userId);
-        if (emitter != null) {
-            try {
-                emitter.send(SseEmitter.event()
-                        .name(eventName)
-                        .data(data)
-                        .id(UUID.randomUUID().toString()));
-            } catch (IOException e) {
-                emitters.remove(userId);
-            }
-        }
+    public void sendNotification(String chatId, String eventName, Object data) {
+        ServerSentEvent<?> event = ServerSentEvent.builder()
+                .event(eventName)
+                .data(data)
+                // On utilise le champ 'comment' pour stocker l'ID destinataire (caché du data)
+                .comment(chatId)
+                .id(UUID.randomUUID().toString())
+                .build();
+
+        // On émet dans le bus global, le filtre du Flux fera le reste
+        globalSink.tryEmitNext(event);
     }
 }
+
+
+
+
+

@@ -41,12 +41,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(whitelist)
                         .permitAll()
-                        .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.ASYNC).permitAll()
                         .anyRequest()
                         .authenticated()
                 )
                 .sessionManagement(sess -> sess
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No sessions
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .cors(cors -> cors.configurationSource(request -> {
                     final CorsConfiguration configuration = new CorsConfiguration();

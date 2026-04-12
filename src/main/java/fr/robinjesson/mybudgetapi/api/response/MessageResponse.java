@@ -4,5 +4,6 @@ public record MessageResponse(
         Long id,
         String text,
         UserResponse user,
-        ConversationResponse conversation
+        ConversationResponse conversation,
+        TimestampResponse timestamp
 ) { }

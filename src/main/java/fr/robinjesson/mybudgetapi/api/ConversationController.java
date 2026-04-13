@@ -1,7 +1,9 @@
 package fr.robinjesson.mybudgetapi.api;
 
 import fr.robinjesson.mybudgetapi.adapter.ConversationAdapter;
+import fr.robinjesson.mybudgetapi.api.request.ConversationRequest;
 import fr.robinjesson.mybudgetapi.api.request.MessageRequest;
+import fr.robinjesson.mybudgetapi.api.response.ConversationResponse;
 import fr.robinjesson.mybudgetapi.api.response.MessageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConversationController {
     private final ConversationAdapter conversationAdapter;
+
+    @PostMapping
+    public ResponseEntity<ConversationResponse> create(@RequestBody final ConversationRequest conversationRequest) {
+        return ResponseEntity.status(201).body(conversationAdapter.create(conversationRequest));
+    }
 
     @GetMapping("/{conversationId}/messages")
     public ResponseEntity<List<MessageResponse>> findMessagesByConversationId(@PathVariable final Long conversationId) {

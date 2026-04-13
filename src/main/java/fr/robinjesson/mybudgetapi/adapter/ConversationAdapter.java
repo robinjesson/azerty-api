@@ -1,8 +1,11 @@
 package fr.robinjesson.mybudgetapi.adapter;
 
+import fr.robinjesson.mybudgetapi.api.request.ConversationRequest;
 import fr.robinjesson.mybudgetapi.api.request.MessageRequest;
+import fr.robinjesson.mybudgetapi.api.response.ConversationResponse;
 import fr.robinjesson.mybudgetapi.api.response.MessageResponse;
 import fr.robinjesson.mybudgetapi.businesses.ConversationBusiness;
+import fr.robinjesson.mybudgetapi.mappers.ConversationMapper;
 import fr.robinjesson.mybudgetapi.mappers.MessageMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.codec.ServerSentEvent;
@@ -15,8 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConversationAdapter {
     private final ConversationBusiness conversationBusiness;
+    private final ConversationMapper conversationMapper;
     private final MessageMapper messageMapper;
     private final ChatNotification chatNotification;
+
+    public ConversationResponse create(final ConversationRequest request) {
+        return conversationMapper.mapToResponse(conversationBusiness.create(request.participantUids()));
+    }
 
     public List<MessageResponse> findMessagesByConversationId(final Long conversationId) {
         return messageMapper.mapToResponse(conversationBusiness.findMessagesByConversationId(conversationId));

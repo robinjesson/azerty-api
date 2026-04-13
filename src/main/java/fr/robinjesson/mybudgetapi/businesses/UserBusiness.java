@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,5 +28,9 @@ public class UserBusiness {
 
     public UserEntity findConnectedUser() {
         return userRepository.findConcreteById(connectedUser.getUid());
+    }
+
+    public List<UserEntity> findAll() {
+        return userRepository.findAll();
     }
 }

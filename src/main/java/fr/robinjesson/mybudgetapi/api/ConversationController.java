@@ -26,6 +26,11 @@ public class ConversationController {
         return ResponseEntity.status(201).body(conversationAdapter.create(conversationRequest));
     }
 
+    @GetMapping
+    public ResponseEntity<List<ConversationResponse>> findForConnectedUser() {
+        return ResponseEntity.ok(conversationAdapter.findForConnectedUser());
+    }
+
     @GetMapping("/{conversationId}/messages")
     public ResponseEntity<List<MessageResponse>> findMessagesByConversationId(@PathVariable final Long conversationId) {
         return ResponseEntity.ok(conversationAdapter.findMessagesByConversationId(conversationId));

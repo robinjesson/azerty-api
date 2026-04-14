@@ -26,6 +26,10 @@ public class ConversationAdapter {
         return conversationMapper.mapToResponse(conversationBusiness.create(request.participantUids()));
     }
 
+    public List<ConversationResponse> findForConnectedUser() {
+        return conversationMapper.mapToResponse(conversationBusiness.findForConnectedUser());
+    }
+
     public List<MessageResponse> findMessagesByConversationId(final Long conversationId) {
         return messageMapper.mapToResponse(conversationBusiness.findMessagesByConversationId(conversationId));
     }

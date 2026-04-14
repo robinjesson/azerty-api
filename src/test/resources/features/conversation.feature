@@ -13,7 +13,8 @@ Feature: Conversation
     """
     And that the ConversationEntity entities will contain:
     """yml
-    - {}
+    - participants:
+        - uid: robinj
     """
     And that the MessageEntity entities will contain:
     """yml
@@ -39,6 +40,14 @@ Feature: Conversation
   Scenario: User cannot retrieve messages from non-existent conversation
     When robinj get "/conversations/999/messages"
     Then we receive a status NOT_FOUND_404
+
+  Scenario: User can retrieve conversations in which they participate
+    When robinj get "/conversations"
+    Then we receive a status OK_200
+    And we receive only:
+    """yml
+    - id: 1
+    """
 
   Scenario: User can create a conversation with participants
     When robinj post "/conversations":

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,5 +22,9 @@ public class UserAdapter {
         userEntity.setLastPasswordModification(LocalDateTime.now());
         userEntity = userBusiness.create(userEntity);
         return userMapper.mapToResponse(userEntity);
+    }
+
+    public List<UserResponse> findAll() {
+        return userMapper.mapToResponse(userBusiness.findAll());
     }
 }

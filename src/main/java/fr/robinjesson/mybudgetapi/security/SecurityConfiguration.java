@@ -45,14 +45,16 @@ public class SecurityConfiguration {
                         .authenticated()
                 )
                 .sessionManagement(sess -> sess
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No sessions
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .cors(cors -> cors.configurationSource(request -> {
                     final CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOrigins(List.of("http://localhost:5173"));
                     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     configuration.setAllowedHeaders(List.of("*"));
+                    configuration.setExposedHeaders(List.of("Set-Cookie"));
                     configuration.setAllowCredentials(true);
+                    configuration.setMaxAge(3600L);
                     return configuration;
                 }))
                 .authenticationProvider(authenticationProvider)

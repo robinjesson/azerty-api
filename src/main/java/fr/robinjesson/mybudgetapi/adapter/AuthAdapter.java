@@ -7,6 +7,7 @@ import fr.robinjesson.mybudgetapi.entities.UserEntity;
 import fr.robinjesson.mybudgetapi.security.Consts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.server.Cookie;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class AuthAdapter {
                 .httpOnly(true)
                 .path("/")
                 .secure(cookieSecure)
+                .sameSite(Cookie.SameSite.LAX.attributeValue())
                 .maxAge(jwtExpiration / 1000)
                 .build();
     }
@@ -38,6 +40,7 @@ public class AuthAdapter {
                 .httpOnly(true)
                 .path("/")
                 .secure(cookieSecure)
+                .sameSite(Cookie.SameSite.LAX.attributeValue())
                 .maxAge(0)
                 .build();
     }

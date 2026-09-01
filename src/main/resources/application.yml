@@ -8,9 +8,9 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
 security:
   jwt:
     secret-key: ${JWT_SECRET_KEY}
     expiration-time: 7200000
-    cookie-secure: true
+    cookie-secure: ${JWT_COOKIE_SECURE:true}
